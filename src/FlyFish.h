@@ -202,6 +202,10 @@ protected:
     std::array<float, DataSize> data{};
 };
 
+struct FMultiVector {
+    float s{}; float e0{}; float e1{}; float e2{}; float e3{}; float e01{}; float e02{}; float e03{}; float e23{}; float e31{}; float e12{}; float e032{}; float e013{}; float e021{}; float e123{}; float e0123{};
+};
+
 class MultiVector : public GAElement<MultiVector, 16>
 {
 public:
@@ -213,24 +217,24 @@ public:
     {
     }
 
-    [[nodiscard]] MultiVector(float s, float e0, float e1, float e2, float e3, float e01, float e02, float e03, float e23, float e31, float e12, float e032, float e013, float e021, float e123, float e0123) noexcept
+    [[nodiscard]] MultiVector(FMultiVector MVector) noexcept
     {
-        data[0] = s;
-        data[1] = e0;
-        data[2] = e1;
-        data[3] = e2;
-        data[4] = e3;
-        data[5] = e01;
-        data[6] = e02;
-        data[7] = e03;
-        data[8] = e23;
-        data[9] = e31;
-        data[10] = e12;
-        data[11] = e032;
-        data[12] = e013;
-        data[13] = e021;
-        data[14] = e123;
-        data[15] = e0123;
+        data[0] = MVector.s;
+        data[1] = MVector.e0;
+        data[2] = MVector.e1;
+        data[3] = MVector.e2;
+        data[4] = MVector.e3;
+        data[5] = MVector.e01;
+        data[6] = MVector.e02;
+        data[7] = MVector.e03;
+        data[8] = MVector.e23;
+        data[9] = MVector.e31;
+        data[10] = MVector.e12;
+        data[11] = MVector.e032;
+        data[12] = MVector.e013;
+        data[13] = MVector.e021;
+        data[14] = MVector.e123;
+        data[15] = MVector.e0123;
     }
 
     static constexpr std::array<const char*, 16> names() {
@@ -279,23 +283,25 @@ public:
     [[nodiscard]] MultiVector operator ~() const{
         float norm{ Norm() };
         float normSquared{ norm };
-        return MultiVector(
-            data[0] / normSquared,
-            data[1] / normSquared,
-            data[2] / normSquared,
-            data[3] / normSquared,
-            data[4] / normSquared,
-            -data[5] / normSquared,
-            -data[6] / normSquared,
-            -data[7] / normSquared,
-            -data[8] / normSquared,
-            -data[9] / normSquared,
-            -data[10] / normSquared,
-            -data[11] / normSquared,
-            -data[12] / normSquared,
-            -data[13] / normSquared,
-            -data[14] / normSquared,
-            data[15] / normSquared
+        return MultiVector(FMultiVector(
+            
+                        data[0] / normSquared,
+                        data[1] / normSquared,
+                        data[2] / normSquared,
+                        data[3] / normSquared,
+                        data[4] / normSquared,
+                        -data[5] / normSquared,
+                        -data[6] / normSquared,
+                        -data[7] / normSquared,
+                        -data[8] / normSquared,
+                        -data[9] / normSquared,
+                        -data[10] / normSquared,
+                        -data[11] / normSquared,
+                        -data[12] / normSquared,
+                        -data[13] / normSquared,
+                        -data[14] / normSquared,
+                        data[15] / normSquared)
+            
             );
     };
 

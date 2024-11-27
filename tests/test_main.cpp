@@ -9,15 +9,15 @@ public:
 
     MultiVector MultiVectorA()
     {
-        return MultiVector(2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17);
+        return MultiVector(FMultiVector(2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17));
     }
     MultiVector MultiVectorB()
     {
-        return MultiVector(3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18);
+        return MultiVector(FMultiVector(3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18));
     }
     MultiVector MultiVectorC()
     {
-        return MultiVector(-4, 5, -6, 7, -8, 9, -10, 11, -12, 13, -14, 15, -16, 17, -18, 19);
+        return MultiVector(FMultiVector(-4, 5, -6, 7, -8, 9, -10, 11, -12, 13, -14, 15, -16, 17, -18, 19));
     }
     OneBlade OneBladeA()
     {
@@ -87,7 +87,7 @@ protected:
 
 // GAElement
 TEST_F(ElementsTest, GAElementToString) {
-    MultiVector multi{ -2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5.2f, -10 };
+    MultiVector multi{ FMultiVector(-2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5.2f, -10) };
     ThreeBlade three{ 5, 0, -3, 2.5f };
     TwoBlade two{1, 2, 0, 0, 0, 0 };
     OneBlade one{ -1, 2.5f, 0, 0 };
@@ -102,7 +102,7 @@ TEST_F(ElementsTest, GAElementToString) {
 }
 
 TEST_F(ElementsTest, GAElementOStreamOutput) {
-    MultiVector multi{ -2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5.2f, -10 };
+    MultiVector multi{ FMultiVector(-2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5.2f, -10) };
 
     std::ostringstream oss1;
     oss1 << multi;
@@ -122,7 +122,7 @@ TEST_F(ElementsTest, GAElementPlus) {
 
     MultiVector res1{ a + b };
 
-    MultiVector correct{ 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35 };
+    MultiVector correct{ FMultiVector(5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35) };
 
     EXPECT_EQ(res1, correct);
 }
@@ -133,7 +133,7 @@ TEST_F(ElementsTest, GAElementPlusEqual) {
 
     a += b;
 
-    MultiVector correct{ 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35 };
+    MultiVector correct{ FMultiVector(5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35) };
 
     EXPECT_EQ(a, correct);
 }
@@ -144,7 +144,7 @@ TEST_F(ElementsTest, GAElementMinus) {
 
     MultiVector res1{ a - b };
 
-    MultiVector correct{ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+    MultiVector correct{ FMultiVector(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1) };
 
     EXPECT_EQ(res1, correct);
 }
@@ -155,7 +155,7 @@ TEST_F(ElementsTest, GAElementMinusEqual) {
 
     a -= b;
 
-    MultiVector correct{ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+    MultiVector correct{ FMultiVector( -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1) };
 
     EXPECT_EQ(a, correct);
 }
@@ -193,7 +193,7 @@ TEST_F(ElementsTest, MultiVectorScalarProduct) {
     MultiVector res1{ 2.f * a };
     MultiVector res2{ a * 2.f };
 
-    MultiVector correct{ 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34 };
+    MultiVector correct{ FMultiVector(4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34) };
 
     EXPECT_EQ(res1, correct);
     EXPECT_EQ(res2, correct);
@@ -207,7 +207,7 @@ TEST_F(ElementsTest, MultiVectorScalarDivision) {
 
     MultiVector res1{ a / 2.f };
 
-    MultiVector correct{ 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5 };
+    MultiVector correct{ FMultiVector(1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5) };
 
     EXPECT_EQ(res1, correct);
 
@@ -225,9 +225,9 @@ TEST_F(ElementsTest, MultiVectorMultiVectorGeometricProduct) {
     MultiVector res2{ a * c };
     MultiVector res3{ b * a };
 
-    MultiVector correct1{ -572, 1028, -322, -356, -378, -314, -404, -374, 200, 238, 276, -14, -4, -18, 464, 636 };
-    MultiVector correct2{ 388, 492, 664, -8, 152, -918, -478, -274, -4, 4, -516, 666, -226, 350, -246, 24 };
-    MultiVector correct3{ -572, 1012, -326, -348, -382, -310, -388, -370, 200, 238, 276, -10, 12, -14, 464, 716 };
+    MultiVector correct1{ FMultiVector(-572, 1028, -322, -356, -378, -314, -404, -374, 200, 238, 276, -14, -4, -18, 464, 636) };
+    MultiVector correct2{ FMultiVector(388, 492, 664, -8, 152, -918, -478, -274, -4, 4, -516, 666, -226, 350, -246, 24) };
+    MultiVector correct3{ FMultiVector(-572, 1012, -326, -348, -382, -310, -388, -370, 200, 238, 276, -10, 12, -14, 464, 716) };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
@@ -246,8 +246,8 @@ TEST_F(ElementsTest, MultiVectorThreeBladeGeometricProduct) {
     MultiVector res1{ a * b };
     MultiVector res2{ a * c };
 
-    MultiVector correct1{ -96, 32, -60, -66, -72, 29, 22, 9, 24, 30, 36, -43, -26, -51, 12, 80 };
-    MultiVector correct2{ -112, -176, -70, -77, -84, 215, 18, 161, 28, 35, 42, 69, -58, -169, 14, -6 };
+    MultiVector correct1{ FMultiVector(-96, 32, -60, -66, -72, 29, 22, 9, 24, 30, 36, -43, -26, -51, 12, 80) };
+    MultiVector correct2{ FMultiVector(-112, -176, -70, -77, -84, 215, 18, 161, 28, 35, 42, 69, -58, -169, 14, -6) };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
@@ -264,8 +264,8 @@ TEST_F(ElementsTest, MultiVectorTwoBladeGeometricProduct) {
     MultiVector res1{ a * b };
     MultiVector res2{ a * c };
 
-    MultiVector correct1{ -233, 234, -94, -116, -126, -104, -95, -134, 8, 22, 12, 24, 55, 50, 107, 304 };
-    MultiVector correct2{ -90, 141, -205, 122, -77, -145, 134, -147, -181, -10, 175, -391, 116, 119, 42, 9 };
+    MultiVector correct1{ FMultiVector(-233, 234, -94, -116, -126, -104, -95, -134, 8, 22, 12, 24, 55, 50, 107, 304) };
+    MultiVector correct2{ FMultiVector(-90, 141, -205, 122, -77, -145, 134, -147, -181, -10, 175, -391, 116, 119, 42, 9) };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
@@ -282,8 +282,8 @@ TEST_F(ElementsTest, MultiVectorOneBladeGeometricProduct) {
     MultiVector res1{ a * b };
     MultiVector res2{ a * c };
 
-    MultiVector correct1{ 77, 128, 2, 22, 6, 9, -18, 9, 64, 80, 96, -101, -112, -141, 167, -260 };
-    MultiVector correct2{ 32, 42, -139, -2, 129, 219, -14, -103, 151, -94, 63, -155, 150, 11, 68, -22 };
+    MultiVector correct1{ FMultiVector(77, 128, 2, 22, 6, 9, -18, 9, 64, 80, 96, -101, -112, -141, 167, -260) };
+    MultiVector correct2{ FMultiVector(32, 42, -139, -2, 129, 219, -14, -103, 151, -94, 63, -155, 150, 11, 68, -22) };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
@@ -300,8 +300,8 @@ TEST_F(ElementsTest, MultiVectorMotorGeometricProduct) {
     MultiVector res1{ a * b };
     MultiVector res2{ a * c };
 
-    MultiVector correct1{ -260, 430, -97, -119, -123, -196, -200, -240, 41, 55, 51, 116, 160, 168, 170, 432 };
-    MultiVector correct2{ 93, 4, 216, -156, 60, 20, -306, 4, 162, -30, -246, 442, -132, -130, -111, -52 };
+    MultiVector correct1{ FMultiVector(-260, 430, -97, -119, -123, -196, -200, -240, 41, 55, 51, 116, 160, 168, 170, 432) };
+    MultiVector correct2{ FMultiVector(93, 4, 216, -156, 60, 20, -306, 4, 162, -30, -246, 442, -132, -130, -111, -52) };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
@@ -320,9 +320,9 @@ TEST_F(ElementsTest, MultiVectorWedge) {
     MultiVector res2{ a ^ c };
     MultiVector res3{ b ^ a };
 
-    MultiVector correct1{ 6, 17, 22, 27, 32, 36, 40, 44, 51, 59, 61, -12, 4, -16, 464, 636 };
-    MultiVector correct2{ -8, -2, -28, -6, -40, -48, -56, -68, -146, -22, -18, 206, -174, -226, -246, 24 };
-    MultiVector correct3{ 6, 17, 22, 27, 32, 38, 44, 50, 53, 55, 63, -12, 4, -16, 464, 716 };
+    MultiVector correct1{ FMultiVector(6, 17, 22, 27, 32, 36, 40, 44, 51, 59, 61, -12, 4, -16, 464, 636) };
+    MultiVector correct2{ FMultiVector(-8, -2, -28, -6, -40, -48, -56, -68, -146, -22, -18, 206, -174, -226, -246, 24) };
+    MultiVector correct3{ FMultiVector(6, 17, 22, 27, 32, 38, 44, 50, 53, 55, 63, -12, 4, -16, 464, 716 )};
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
@@ -343,9 +343,9 @@ TEST_F(ElementsTest, MultiVectorDot) {
     MultiVector res2{ a | c };
     MultiVector res3{ b | a };
 
-    MultiVector correct1{ -572, 1028, -322, -356, -378, -312, -396, -372, 200, 238, 276, 54, 60, 66, 82, 87 };
-    MultiVector correct2{ 388, 492, 664, -8, 152, -394, -490, 310, -232, 4, -312, 156, -112, 224, -100, -30 };
-    MultiVector correct3{ -572, 1012, -326, -348, -382, -312, -396, -372, 200, 238, 276, 80, 84, 88, 82, 87 };
+    MultiVector correct1{ FMultiVector(-572, 1028, -322, -356, -378, -312, -396, -372, 200, 238, 276, 54, 60, 66, 82, 87) };
+    MultiVector correct2{ FMultiVector(388, 492, 664, -8, 152, -394, -490, 310, -232, 4, -312, 156, -112, 224, -100, -30) };
+    MultiVector correct3{ FMultiVector(-572, 1012, -326, -348, -382, -312, -396, -372, 200, 238, 276, 80, 84, 88, 82, 87) };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
@@ -366,9 +366,9 @@ TEST_F(ElementsTest, MultiVectorJoin) {
     MultiVector res2{ a & c };
     MultiVector res3{ b & a };
 
-    MultiVector correct1{ 636, -620, 398, 484, 534, 261, 299, 331, 370, 404, 438, 472, 507, 542, 577, 306 };
-    MultiVector correct2{ 24, -130, 762, -82, -670, 764, -14, -60, 460, 426, 532, 502, -6, 574, -2, 323 };
-    MultiVector correct3{ 716, -620, 398, 484, 534, 263, 295, 333, 364, 400, 436, 472, 507, 542, 577, 306 };
+    MultiVector correct1{ FMultiVector(636, -620, 398, 484, 534, 261, 299, 331, 370, 404, 438, 472, 507, 542, 577, 306) };
+    MultiVector correct2{ FMultiVector(24, -130, 762, -82, -670, 764, -14, -60, 460, 426, 532, 502, -6, 574, -2, 323) };
+    MultiVector correct3{ FMultiVector(716, -620, 398, 484, 534, 263, 295, 333, 364, 400, 436, 472, 507, 542, 577, 306) };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
@@ -388,13 +388,17 @@ TEST_F(ElementsTest, MultiVectorInverse) {
     MultiVector res2{ ~c };
 
     MultiVector correct1{
+        FMultiVector(
         -0.057254f, -0.05906f, 0.034449f, 0.037603f, 0.040757f, 0.041053f, 0.041673f, 0.055879f,
-        -0.019408f, -0.023532f, -0.027656f, 0.026875f, 0.041619f, 0.04666f, 0.015041f, 0.0034234f
+                -0.019408f, -0.023532f, -0.027656f, 0.026875f, 0.041619f, 0.04666f, 0.015041f, 0.0034234f)
+        
     };
 
     MultiVector correct2{
+        FMultiVector(
         0.042378f, -0.033246f, -0.027217f, 0.02933f, -0.031443f, 0.029903f, -0.03863f, 0.038761f,
-        0.018264f, -0.020998f, 0.023732f, 0.028972f, -0.03278f, 0.041745f, -0.01528f, 0.0092276f
+                0.018264f, -0.020998f, 0.023732f, 0.028972f, -0.03278f, 0.041745f, -0.01528f, 0.0092276f)
+        
     };
 
     // EXPECT_TRUE(res1.RoundedEqual(correct1, 0.0001));
@@ -459,8 +463,8 @@ TEST_F(ElementsTest, OneBladeMultiVectorGeometricProduct) {
     MultiVector res1{ a * b };
     MultiVector res2{ a * c };
 
-    MultiVector correct1{ 74, -104, 17, -4, 23, 9, -26, 5, 49, 72, 83, 27, 58, 59, 146, 216 };
-    MultiVector correct2{ -30, -50, 109, 2, -107, -175, -30, 67, -121, -78, -45, 175, 62, 57, -54, 30 };
+    MultiVector correct1{ FMultiVector(74, -104, 17, -4, 23, 9, -26, 5, 49, 72, 83, 27, 58, 59, 146, 216) };
+    MultiVector correct2{ FMultiVector(-30, -50, 109, 2, -107, -175, -30, 67, -121, -78, -45, 175, 62, 57, -54, 30) };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
@@ -477,8 +481,8 @@ TEST_F(ElementsTest, OneBladeMotorGeometricProduct) {
     MultiVector res1{ a * b };
     MultiVector res2{ a * c };
 
-    MultiVector correct1{ 0, -56, 13, 4, 19, 0, 0, 0, 0, 0, 0, 15, 26, 31, 98, 0 };
-    MultiVector correct2{ 0, -34, 73, -6, -79, 0, 0, 0, 0, 0, 0, 107, 30, 37, -38, 0 };
+    MultiVector correct1{ FMultiVector(0, -56, 13, 4, 19, 0, 0, 0, 0, 0, 0, 15, 26, 31, 98, 0) };
+    MultiVector correct2{ FMultiVector( 0, -34, 73, -6, -79, 0, 0, 0, 0, 0, 0, 107, 30, 37, -38, 0) };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
@@ -514,8 +518,8 @@ TEST_F(ElementsTest, ThreeBladeMultiVectorGeometricProduct) {
     MultiVector res1{ a * b };
     MultiVector res2{ a * c };
 
-    MultiVector correct1{ -85, 200, -55, -60, -65, -39, -18, -15, 25, 30, 35, 55, 36, 71, 15, -76 };
-    MultiVector correct2{ 90, 54, 60, -65, 70, -163, 18, -125, -30, 35, -40, 131, -42, -23, -20, -2 };
+    MultiVector correct1{ FMultiVector(-85, 200, -55, -60, -65, -39, -18, -15, 25, 30, 35, 55, 36, 71, 15, -76) };
+    MultiVector correct2{ FMultiVector(90, 54, 60, -65, 70, -163, 18, -125, -30, 35, -40, 131, -42, -23, -20, -2) };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
@@ -551,8 +555,8 @@ TEST_F(ElementsTest, TwoBladeMultiVectorGeometricProduct) {
     MultiVector res1{ a * b };
     MultiVector res2{ a * c };
 
-    MultiVector correct1{ -218, 328, -85, -102, -119, -72, -123, -102, 21, 6, 27, -42, -99, -84, 110, 274 };
-    MultiVector correct2{ 80, 75, 187, 110, 55, -145, -114, -107, 155, -10, -165, -151, 12, 175, -44, 21 };
+    MultiVector correct1{ FMultiVector(-218, 328, -85, -102, -119, -72, -123, -102, 21, 6, 27, -42, -99, -84, 110, 274) };
+    MultiVector correct2{ FMultiVector(80, 75, 187, 110, 55, -145, -114, -107, 155, -10, -165, -151, 12, 175, -44, 21) };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
@@ -587,8 +591,8 @@ TEST_F(ElementsTest, TwoBladeOneBladeGeometricProduct) {
     MultiVector res1{ a * b };
     MultiVector res2{ a * c };
 
-    MultiVector correct1{ 0, 47, -1, 2, -1, 0, 0, 0, 0, 0, 0, -13, -22, -19, 92, 0 };
-    MultiVector correct2{ 0, 20, -84, 0, 60, 0, 0, 0, 0, 0, 0, -25, 18, 55, 38, 0 };
+    MultiVector correct1{ FMultiVector(0, 47, -1, 2, -1, 0, 0, 0, 0, 0, 0, -13, -22, -19, 92, 0 )};
+    MultiVector correct2{ FMultiVector(0, 20, -84, 0, 60, 0, 0, 0, 0, 0, 0, -25, 18, 55, 38, 0 )};
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
@@ -643,8 +647,8 @@ TEST_F(ElementsTest, MotorThreeBladeGeometricProduct) {
     MultiVector res1{ a * b };
     MultiVector res2{ a * c };
 
-    MultiVector correct1{ 0, 32, -36, -42, -48, 0, 0, 0, 0, 0, 0, -15, -10, -23, 12, 0 };
-    MultiVector correct2{ 0, -100, -42, -49, -56, 0, 0, 0, 0, 0, 0, 53, -22, -105, 14, 0 };
+    MultiVector correct1{ FMultiVector(0, 32, -36, -42, -48, 0, 0, 0, 0, 0, 0, -15, -10, -23, 12, 0) };
+    MultiVector correct2{ FMultiVector(0, -100, -42, -49, -56, 0, 0, 0, 0, 0, 0, 53, -22, -105, 14, 0) };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
