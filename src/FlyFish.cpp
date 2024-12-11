@@ -486,22 +486,22 @@ return res;
 [[nodiscard]] MultiVector Motor::operator* (const MultiVector& b) const
 {
     MultiVector res{};
-    res[0] = data[0] * b[0] - data[6] * b[10] - data[5] * b[9] - data[4] * b[8];
-    res[1] = data[0] * b[1] - data[1] * b[2] - data[2] * b[3] - data[3] * b[4] + data[6] * b[13] + data[5] * b[12] + data[4] * b[11] + data[7] * b[14];
-    res[2] = data[0] * b[2] - data[6] * b[3] + data[5] * b[4] - data[4] * b[14];
-    res[3] = data[6] * b[2] + data[0] * b[3] - data[4] * b[4] - data[5] * b[14];
-    res[4] = -data[5] * b[2] + data[4] * b[3] + data[0] * b[4] - data[6] * b[14];
-    res[5] = data[1] * b[0] + data[0] * b[5] - data[6] * b[6] + data[5] * b[7] + data[2] * b[10] - data[3] * b[9] - data[7] * b[8] - data[4] * b[15];
-    res[6] = data[2] * b[0] + data[6] * b[5] + data[0] * b[6] - data[4] * b[7] - data[1] * b[10] - data[7] * b[9] + data[3] * b[8] - data[5] * b[15];
-    res[7] = data[3] * b[0] - data[5] * b[5] + data[4] * b[6] + data[0] * b[7] - data[7] * b[10] + data[1] * b[9] - data[2] * b[8] - data[6] * b[15];
-    res[8] = data[4] * b[0] + data[5] * b[10] - data[6] * b[9] + data[0] * b[8];
-    res[9] = data[5] * b[0] - data[4] * b[10] + data[0] * b[9] + data[6] * b[8];
-    res[10] = data[6] * b[0] + data[0] * b[10] + data[4] * b[9] - data[5] * b[8];
-    res[11] = -data[4] * b[1] + data[7] * b[2] + data[3] * b[3] - data[2] * b[4] + data[5] * b[13] - data[6] * b[12] + data[0] * b[11] + data[1] * b[14];
-    res[12] = -data[5] * b[1] - data[3] * b[2] + data[7] * b[3] + data[1] * b[4] - data[4] * b[13] + data[0] * b[12] + data[6] * b[11] + data[2] * b[14];
-    res[13] = -data[6] * b[1] + data[2] * b[2] - data[1] * b[3] + data[7] * b[4] + data[0] * b[13] + data[4] * b[12] - data[5] * b[11] + data[3] * b[14];
-    res[14] = data[4] * b[2] + data[5] * b[3] + data[6] * b[4] + data[0] * b[14];
-    res[15] = data[7] * b[0] + data[4] * b[5] + data[5] * b[6] + data[6] * b[7] + data[3] * b[10] + data[2] * b[9] + data[1] * b[8] + data[0] * b[15];
+    res[0] = b[0] * data[0] - b[10] * data[6] - b[9] * data[5] - b[8] * data[4];
+    res[1] = b[1] * data[0] + b[2] * data[1] + b[3] * data[2] + b[4] * data[3] + b[13] * data[6] + b[12] * data[5] + b[11] * data[4] - b[14] * data[7];
+    res[2] = b[2] * data[0] + b[3] * data[6] - b[4] * data[5] - b[14] * data[4];
+    res[3] = b[3] * data[0] - b[2] * data[6] - b[14] * data[5] + b[4] * data[4];
+    res[4] = b[4] * data[0] - b[14] * data[6] + b[2] * data[5] - b[3] * data[4];
+    res[5] = b[5] * data[0] + b[0] * data[1] - b[10] * data[2] + b[9] * data[3] + b[6] * data[6] - b[7] * data[5] - b[15] * data[4] - b[8] * data[7];
+    res[6] = b[6] * data[0] + b[10] * data[1] + b[0] * data[2] - b[8] * data[3] - b[5] * data[6] - b[15] * data[5] + b[7] * data[4] - b[9] * data[7];
+    res[7] = b[7] * data[0] - b[9] * data[1] + b[8] * data[2] + b[0] * data[3] - b[15] * data[6] + b[5] * data[5] - b[6] * data[4]  - b[10] * data[7];
+    res[8] = b[8] * data[0] + b[9] * data[6] - b[10] * data[5] + b[0] * data[4];
+    res[9] = b[9] * data[0] - b[8] * data[6] + b[0] * data[5] + b[10] * data[4];
+    res[10] = b[10] * data[0] + b[0] * data[6] + b[8] * data[5] - b[9] * data[4];
+    res[11] = b[11] * data[0] - b[14] * data[1] - b[4] * data[2] + b[3] * data[3] + b[12] * data[6] - b[13] * data[5] - b[1] * data[4] - b[2] * data[7];
+    res[12] = b[12] * data[0] + b[4] * data[1] - b[14] * data[2] - b[2] * data[3] - b[11] * data[6] - b[1] * data[5] + b[13] * data[4] - b[3] * data[7];
+    res[13] = b[13] * data[0] - b[3] * data[1] + b[2] * data[2] - b[14] * data[3] - b[1] * data[6] + b[11] * data[5] - b[12] * data[4] - b[4] * data[7];
+    res[14] = b[14] * data[0] + b[4] * data[6] + b[3] * data[5] + b[2] * data[4];
+    res[15] = b[15] * data[0] + b[8] * data[1] + b[9] * data[2] + b[10] * data[3] + b[7] * data[6] + b[6] * data[5] + b[5] * data[4] + b[0] * data[7];
     return res;
 }
 [[nodiscard]] MultiVector Motor::operator* (const ThreeBlade& b) const
@@ -527,7 +527,7 @@ return res;
 }
 [[nodiscard]] Motor Motor::operator* (const TwoBlade& b) const {
     Motor res{};
-    res[0] = -b[5] * data[6] - b[4] * data[5] - b[3] * data[4];
+    res[0] = - b[5] * data[6] - b[4] * data[5] - b[3] * data[4];
     res[1] = b[0] * data[0] - b[5] * data[2] + b[4] * data[3] + b[1] * data[6] - b[2] * data[5] - b[3] * data[7];
     res[2] = b[1] * data[0] + b[5] * data[1] - b[3] * data[3] - b[0] * data[6] + b[2] * data[4] - b[4] * data[7];
     res[3] = b[2] * data[0] - b[4] * data[1] + b[3] * data[2] + b[0] * data[5] - b[1] * data[4] - b[5] * data[7];

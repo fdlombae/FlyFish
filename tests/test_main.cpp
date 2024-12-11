@@ -611,6 +611,26 @@ TEST_F(ElementsTest, TwoBladePermutedDotTwoBladed) {
 }
 
 // Motor
+TEST_F(ElementsTest, MotorMultiVectorGeometricProduct) {
+    Motor a{ elements->MotorA() };
+    Motor aDuplicate{ elements->MotorA() };
+    MultiVector b{ elements->MultiVectorB() };
+    MultiVector bDuplicate{ elements->MultiVectorB() };
+    MultiVector c{ elements->MultiVectorC() };
+
+    MultiVector res1{ a * b };
+    MultiVector res2{ a * c };
+
+    MultiVector correct1{ -248, 246, -93, -105, -123, -172, -224, -216, 45, 35, 55, -82, -140, -138, 162, 400};
+    MultiVector correct2{ 85, 256, 208, 140, 44, -36, -274, 12, 154, 10, -222, -72, -70, 312, -87, 20 };
+
+    EXPECT_EQ(res1, correct1);
+    EXPECT_EQ(res2, correct2);
+
+    EXPECT_EQ(a, aDuplicate);
+    EXPECT_EQ(b, bDuplicate);
+}
+
 TEST_F(ElementsTest, MotorMotorGeometricProduct) {
     Motor a{ elements->MotorA() };
     Motor aDuplicate{ elements->MotorA() };
@@ -657,16 +677,20 @@ TEST_F(ElementsTest, MotorTwoBladeGeometricProduct) {
     Motor aDuplicate{ elements->MotorA() };
     TwoBlade b{ elements->TwoBladeB() };
     TwoBlade c{ elements->TwoBladeC() };
+    Motor motorC{ elements->MotorC() };
+
 
     Motor res1{ a * b };
     Motor res2{ a * c };
+    Motor res3{ motorC * b };
 
     Motor correct1{ -149, -48, -55, -62, 12, 14, 16, 172 };
     Motor correct2{ -58, -65, 70, -99, -113, -18, 115, -3 };
+    Motor correct3{ 65, -66, -105, -120, -166, -32, 78, 6 };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
-
+    EXPECT_EQ(res3, correct3);
     EXPECT_EQ(a, aDuplicate);
 }
 
@@ -692,7 +716,7 @@ TEST_F(ElementsTest, Translation) {
 
     Motor translation1 = Motor::Translation(7.f, a);
     TwoBlade result1{ ((translation1 * b) * ~translation1).Grade2() };
-    TwoBlade correct1{ -2.1994, 14.399, -0.19956, 6, 7, 8 };
+    TwoBlade correct1{ -2.1994f, 14.399f, -0.19956f, 6, 7, 8 };
 
     EXPECT_TRUE(result1.RoundedEqual(correct1, 0.0001f));
     EXPECT_EQ(a, aDuplicate);
