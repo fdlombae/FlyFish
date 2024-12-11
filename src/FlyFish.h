@@ -175,7 +175,7 @@ public:
         }
         return d;
     }
-    [[nodiscard]] Derived operator + (Derived& b) const
+    [[nodiscard]] Derived operator + (const Derived& b) const
     {
         Derived d{};
         for (size_t idx{}; idx < DataSize; idx++)
@@ -184,7 +184,7 @@ public:
         }
         return d;
     }
-    [[nodiscard]] Derived operator - (Derived& b) const
+    [[nodiscard]] Derived operator - (const Derived& b) const
     {
         Derived d{};
         for (size_t idx{}; idx < DataSize; idx++)
