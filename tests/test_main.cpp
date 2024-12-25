@@ -121,10 +121,12 @@ TEST_F(ElementsTest, GAElementPlus) {
     MultiVector b{ elements->MultiVectorB() };
 
     MultiVector res1{ a + b };
+    MultiVector res2{ b + elements->MultiVectorA() };
 
     MultiVector correct{ 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35 };
 
     EXPECT_EQ(res1, correct);
+    EXPECT_EQ(res2, correct);
 }
 
 TEST_F(ElementsTest, GAElementPlusEqual) {
@@ -143,10 +145,13 @@ TEST_F(ElementsTest, GAElementMinus) {
     MultiVector b{ elements->MultiVectorB() };
 
     MultiVector res1{ a - b };
+    MultiVector res2{ b - elements->MultiVectorA() };
 
-    MultiVector correct{ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+    MultiVector correct1{ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+    MultiVector correct2{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 
-    EXPECT_EQ(res1, correct);
+    EXPECT_EQ(res1, correct1);
+    EXPECT_EQ(res2, correct2);
 }
 
 TEST_F(ElementsTest, GAElementMinusEqual) {
