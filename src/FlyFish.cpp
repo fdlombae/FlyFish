@@ -441,7 +441,7 @@ MultiVector& MultiVector::operator=(Motor&& b) noexcept
     res[4] = data[1] * b[3];
     res[5] = data[2] * b[3];
     res[6] = data[3] * b[3];
-    res[7] = -data[3] * b[2] - data[2] * b[1] - data[1] * b[0] - data[0] * b[3];
+    res[7] = data[3] * b[2] + data[2] * b[1] + data[1] * b[0] + data[0] * b[3];
     return res;
 }
 [[nodiscard]] MultiVector OneBlade::operator* (const TwoBlade& b) const {
