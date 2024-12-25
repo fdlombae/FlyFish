@@ -167,20 +167,20 @@ TEST_F(ElementsTest, GAElementProxyReferencing) {
     OneBlade oneBlade{ elements->OneBladeA() };
     Motor motor{ elements->MotorA() };
     
-    EXPECT_EQ(multiVector.s, multiVector[0]);
-    EXPECT_EQ(multiVector.e0, multiVector[1]);
+    EXPECT_EQ(multiVector.s(), multiVector[0]);
+    EXPECT_EQ(multiVector.e0(), multiVector[1]);
 
-    EXPECT_EQ(threeBlade.e032, threeBlade[0]);
-    EXPECT_EQ(threeBlade.e123, threeBlade[3]);
+    EXPECT_EQ(threeBlade.e032(), threeBlade[0]);
+    EXPECT_EQ(threeBlade.e123(), threeBlade[3]);
 
-    EXPECT_EQ(twoBlade.e01, twoBlade[0]);
-    EXPECT_EQ(twoBlade.e23, twoBlade[3]);
+    EXPECT_EQ(twoBlade.e01(), twoBlade[0]);
+    EXPECT_EQ(twoBlade.e23(), twoBlade[3]);
 
-    EXPECT_EQ(oneBlade.e0, oneBlade[0]);
-    EXPECT_EQ(oneBlade.e3, oneBlade[3]);
+    EXPECT_EQ(oneBlade.e0(), oneBlade[0]);
+    EXPECT_EQ(oneBlade.e3(), oneBlade[3]);
 
-    EXPECT_EQ(motor.s, motor[0]);
-    EXPECT_EQ(motor.e0123, motor[7]);
+    EXPECT_EQ(motor.s(), motor[0]);
+    EXPECT_EQ(motor.e0123(), motor[7]);
 }
 
 // MultiVector
