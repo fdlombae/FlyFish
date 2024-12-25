@@ -15,6 +15,23 @@ constexpr float DEG_TO_RAD = 3.141592f / 180.0f;
 template <typename Derived, int DataSize>
 class GAElement
 {
+protected:
+    class Proxy {
+    private:
+        float& value;
+
+    public:
+        Proxy(float& ref) : value(ref) {}
+
+        Proxy& operator=(float val) {
+            value = val;
+            return *this;
+        }
+
+        operator float() const {
+            return value;
+        }
+    };
 public:
     [[nodiscard]] GAElement() noexcept
     {
@@ -97,6 +114,10 @@ public:
     auto end() { return data.end(); }
     auto begin() const { return data.begin(); }
     auto end() const { return data.end(); }
+
+    Proxy get(size_t index) {
+        return Proxy(data[index]);
+    }
 
     bool operator== (const GAElement& b) const
     {
@@ -208,6 +229,23 @@ public:
     using GAElement::GAElement;
     using GAElement::operator*;
     using GAElement::operator/;
+
+    Proxy s{ get(0) };
+    Proxy e0{ get(1) };
+    Proxy e1{ get(2) };
+    Proxy e2{ get(3) };
+    Proxy e3{ get(4) };
+    Proxy e01{ get(5) };
+    Proxy e02{ get(6) };
+    Proxy e03{ get(7) };
+    Proxy e23{ get(8) };
+    Proxy e31{ get(9) };
+    Proxy e12{ get(10) };
+    Proxy e032{ get(11) };
+    Proxy e013{ get(12) };
+    Proxy e021{ get(13) };
+    Proxy e123{ get(14) };
+    Proxy e0123{ get(15) };
 
     [[nodiscard]] MultiVector() noexcept : GAElement()
     {
@@ -335,6 +373,11 @@ public:
     using GAElement::operator*;
     using GAElement::operator/;
 
+    Proxy e0{ get(0) };
+    Proxy e1{ get(1) };
+    Proxy e2{ get(2) };
+    Proxy e3{ get(3) };
+
     OneBlade() : GAElement()
     {
     }
@@ -417,6 +460,13 @@ public:
     using GAElement::GAElement;
     using GAElement::operator*;
     using GAElement::operator/;
+
+    Proxy e01{ get(0) };
+    Proxy e02{ get(1) };
+    Proxy e03{ get(2) };
+    Proxy e23{ get(3) };
+    Proxy e31{ get(4) };
+    Proxy e12{ get(5) };
 
     TwoBlade() : GAElement()
     {
@@ -522,6 +572,11 @@ public:
     using GAElement::operator*;
     using GAElement::operator/;
 
+    Proxy e032{ get(0) };
+    Proxy e013{ get(1) };
+    Proxy e021{ get(2) };
+    Proxy e123{ get(3) };
+
     [[nodiscard]] ThreeBlade() : GAElement()
     {
     }
@@ -616,6 +671,15 @@ public:
     using GAElement::GAElement;
     using GAElement::operator*;
     using GAElement::operator/;
+
+    Proxy s{ get(0) };
+    Proxy e01{ get(1) };
+    Proxy e02{ get(2) };
+    Proxy e03{ get(3) };
+    Proxy e23{ get(4) };
+    Proxy e31{ get(5) };
+    Proxy e12{ get(6) };
+    Proxy e0123{ get(7) };
 
     [[nodiscard]] Motor() : GAElement()
     {
