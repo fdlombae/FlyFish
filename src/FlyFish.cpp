@@ -540,14 +540,14 @@ return res;
 [[nodiscard]] MultiVector Motor::operator* (const OneBlade& b) const
 {
     MultiVector res{};
-    res[1] = data[0] * b[0] - data[1] * b[1] - data[2] * b[2] - data[3] * b[3];
-    res[2] = data[0] * b[1] - data[6] * b[2] + data[5] * b[3];
-    res[3] = data[6] * b[1] + data[0] * b[2] - data[4] * b[3];
-    res[4] = -data[5] * b[1] + data[4] * b[2] + data[0] * b[3];
-    res[11] = -data[4] * b[0] + data[7] * b[1] + data[3] * b[2] - data[2] * b[3];
-    res[12] = -data[5] * b[0] - data[3] * b[1] + data[7] * b[2] + data[1] * b[3];
-    res[13] = -data[6] * b[0] + data[2] * b[1] - data[1] * b[2] + data[7] * b[3];
-    res[14] = data[4] * b[1] + data[5] * b[2] + data[6] * b[3];
+    res[1] = b[0] * data[0] + b[1] * data[1] + b[2] * data[2] + b[3] * data[3];
+    res[2] = b[1] * data[0] + b[2] * data[6] - b[3] * data[5];
+    res[3] = b[2] * data[0] - b[1] * data[6] + b[3] * data[4];
+    res[4] = b[3] * data[0] + b[1] * data[5] - b[2] * data[4];
+    res[11] = - b[3] * data[2] + b[2] * data[3] - b[0] * data[4] - b[1] * data[7];
+    res[12] = b[3] * data[1] - b[1] * data[3] - b[0] * data[5] - b[2] * data[7];
+    res[13] = - b[2] * data[1] + b[1] * data[2] - b[0] * data[6] - b[3] * data[7];
+    res[14] = b[3] * data[6] + b[2] * data[5] + b[1] * data[4];
     return res;
 }
 [[nodiscard]] Motor Motor::operator* (const Motor& b) const {
@@ -1141,21 +1141,21 @@ return res;
 {
     MultiVector res{};
     res[0] = 0;
-    res[1] = data[0] * b[0];
-    res[2] = data[1] * b[0];
-    res[3] = data[2] * b[0];
-    res[4] = data[3] * b[0];
-    res[5] = data[1] * b[1] - data[0] * b[2];
-    res[6] = data[2] * b[1] - data[0] * b[3];
-    res[7] = data[3] * b[1] - data[0] * b[4];
-    res[10] = data[2] * b[2] - data[1] * b[3];
-    res[9] = -data[3] * b[2] + data[1] * b[4];
-    res[8] = data[3] * b[3] - data[2] * b[4];
-    res[13] = -data[2] * b[5] + data[1] * b[6] - data[0] * b[10];
-    res[12] = data[3] * b[5] - data[1] * b[7] - data[0] * b[9];
-    res[11] = -data[3] * b[6] + data[2] * b[7] - data[0] * b[8];
-    res[14] = data[3] * b[10] + data[2] * b[9] + data[1] * b[8];
-    res[15] = -data[3] * b[13] - data[2] * b[12] - data[1] * b[11] - data[0] * b[14];
+    res[1] = b[0] * data[0];
+    res[2] = b[0] * data[1];
+    res[3] = b[0] * data[2];
+    res[4] = b[0] * data[3];
+    res[5] = b[2] * data[0] - b[1] * data[1];
+    res[6] = b[3] * data[0] - b[1] * data[2];
+    res[7] = b[4] * data[0] - b[1] * data[3];
+    res[10] = b[3] * data[1] - b[2] * data[2];
+    res[9] = - b[4] * data[1] + b[2] * data[3];
+    res[8] = b[4] * data[2] - b[3] * data[3];
+    res[13] = - b[10] * data[0] + b[6] * data[1] - b[5] * data[2];
+    res[12] = - b[9] * data[0] - b[7] * data[1] + b[5] * data[3];
+    res[11] = - b[8] * data[0] + b[7] * data[2] - b[6] * data[3];
+    res[14] = b[8] * data[1] + b[9] * data[2] + b[10] * data[3];
+    res[15] = b[14] * data[0] + b[11] * data[1] + b[12] * data[2] + b[13] * data[3];
     return res;
 }
 [[nodiscard]] MultiVector OneBlade::operator^(const ThreeBlade& b) const
@@ -1191,12 +1191,12 @@ return res;
 [[nodiscard]] TwoBlade OneBlade::operator^(const OneBlade& b) const
 {
     TwoBlade res{};
-    res[0] = data[1] * b[0] - data[0] * b[1];
-    res[1] = data[2] * b[0] - data[0] * b[2];
-    res[2] = data[3] * b[0] - data[0] * b[3];
-    res[5] = data[2] * b[1] - data[1] * b[2];
-    res[4] = -data[3] * b[1] + data[1] * b[3];
-    res[3] = data[3] * b[2] - data[2] * b[3];
+    res[0] = b[1] * data[0] - b[0] * data[1];
+    res[1] = b[2] * data[0] - b[0] * data[2];
+    res[2] = b[3] * data[0] - b[0] * data[3];
+    res[5] = b[2] * data[1] - b[1] * data[2];
+    res[4] = -b[3] * data[1] + b[1] * data[3];
+    res[3] = b[3] * data[2] - b[2] * data[3];
     return res;
 }
 [[nodiscard]] MultiVector OneBlade::operator^(const Motor& b) const
