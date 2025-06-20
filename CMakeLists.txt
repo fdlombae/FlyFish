@@ -23,10 +23,3 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 target_link_libraries(FlyFish_Test PRIVATE gtest gtest_main)
-
-add_custom_command(TARGET FlyFish_Test POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-    "$<TARGET_FILE_DIR:gtest>/gtest.lib"
-    "$<TARGET_FILE_DIR:FlyFish_Test>/"
-)
-

@@ -4,9 +4,9 @@
 
 [[nodiscard]] TwoBlade Motor::Grade2() const
 {
-    return TwoBlade(
+    return {
         data[1], data[2], data[3], data[4], data[5], data[6]
-    );
+    };
 }
 [[nodiscard]] OneBlade MultiVector::Grade1() const
 {
@@ -1661,7 +1661,7 @@ return res;
 // Dual operator
 [[nodiscard]] MultiVector MultiVector::operator! () const
 {
-    return MultiVector(
+    return {
         data[15],
         data[14],
         data[11],
@@ -1678,30 +1678,30 @@ return res;
         data[4],
         data[1],
         data[0]
-    );
+    };
 }
 [[nodiscard]] OneBlade ThreeBlade::operator! () const
 {
-    return OneBlade(data[3], data[0], data[1], data[2]);
+    return {data[3], data[0], data[1], data[2]};
 }
 [[nodiscard]] TwoBlade TwoBlade::operator! () const
 {
-    return TwoBlade(
+    return {
         data[3],
         data[4],
         data[5],
         data[0],
         data[1],
         data[2]
-    );
+    };
 }
 [[nodiscard]] ThreeBlade OneBlade::operator! () const
 {
-    return ThreeBlade(data[1], data[2], data[3], data[0]);
+    return {data[1], data[2], data[3], data[0]};
 }
 [[nodiscard]] Motor Motor::operator! () const
 {
-    return Motor(
+    return {
         data[7],
         data[4],
         data[5],
@@ -1710,5 +1710,5 @@ return res;
         data[2],
         data[3],
         data[0]
-    );
+    };
 }

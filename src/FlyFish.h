@@ -16,15 +16,13 @@ template <typename Derived, int DataSize>
 class GAElement
 {
 public:
-    [[nodiscard]] GAElement() noexcept
-    {
-    }
+    [[nodiscard]] GAElement() noexcept = default;
 
     inline float& operator [] (size_t idx) { return data[idx]; }
     inline const float& operator [] (size_t idx) const { return data[idx]; }
 
     inline float& get(size_t index) { return data[index]; }
-    inline const float& get(size_t index) const { return data[index]; }
+    [[nodiscard]] inline const float& get(size_t index) const { return data[index]; }
 
     GAElement(const GAElement& other) noexcept {
         data = other.data;
@@ -53,7 +51,7 @@ public:
         return os;
     }
 
-    std::string toString() const {
+    [[nodiscard]] std::string toString() const {
         std::ostringstream output;
         const auto& names = Derived::names();
         bool first = true;
@@ -98,14 +96,14 @@ public:
     // Iterator support
     auto begin() { return data.begin(); }
     auto end() { return data.end(); }
-    auto begin() const { return data.begin(); }
-    auto end() const { return data.end(); }
+    [[nodiscard]] auto begin() const { return data.begin(); }
+    [[nodiscard]] auto end() const { return data.end(); }
 
     bool operator== (const GAElement& b) const
     {
         return data == b.data;
     }
-    bool RoundedEqual(const GAElement& b, float tolerance) const
+    [[nodiscard]] bool RoundedEqual(const GAElement& b, float tolerance) const
     {
         for (size_t i = 0; i < DataSize; ++i) {
             if (std::fabs(data[i] - b[i]) > tolerance) {
@@ -197,7 +195,7 @@ public:
         return d;
     }
 
-    friend [[nodiscard]] Derived operator*(float scalar, const Derived& element) {
+    friend Derived operator*(float scalar, const Derived& element) {
         return element * scalar;
     }
 
@@ -229,22 +227,22 @@ public:
     inline float& e123() { return get(14); }
     inline float& e0123() { return get(15); }
 
-    inline const float& s() const { return get(0); }
-    inline const float& e0() const { return get(1); }
-    inline const float& e1() const { return get(2); }
-    inline const float& e2() const { return get(3); }
-    inline const float& e3() const { return get(4); }
-    inline const float& e01() const { return get(5); }
-    inline const float& e02() const { return get(6); }
-    inline const float& e03() const { return get(7); }
-    inline const float& e23() const { return get(8); }
-    inline const float& e31() const { return get(9); }
-    inline const float& e12() const { return get(10); }
-    inline const float& e032() const { return get(11); }
-    inline const float& e013() const { return get(12); }
-    inline const float& e021() const { return get(13); }
-    inline const float& e123() const { return get(14); }
-    inline const float& e0123() const { return get(15); }
+    [[nodiscard]] inline const float& s() const { return get(0); }
+    [[nodiscard]] inline const float& e0() const { return get(1); }
+    [[nodiscard]] inline const float& e1() const { return get(2); }
+    [[nodiscard]] inline const float& e2() const { return get(3); }
+    [[nodiscard]] inline const float& e3() const { return get(4); }
+    [[nodiscard]] inline const float& e01() const { return get(5); }
+    [[nodiscard]] inline const float& e02() const { return get(6); }
+    [[nodiscard]] inline const float& e03() const { return get(7); }
+    [[nodiscard]] inline const float& e23() const { return get(8); }
+    [[nodiscard]] inline const float& e31() const { return get(9); }
+    [[nodiscard]] inline const float& e12() const { return get(10); }
+    [[nodiscard]] inline const float& e032() const { return get(11); }
+    [[nodiscard]] inline const float& e013() const { return get(12); }
+    [[nodiscard]] inline const float& e021() const { return get(13); }
+    [[nodiscard]] inline const float& e123() const { return get(14); }
+    [[nodiscard]] inline const float& e0123() const { return get(15); }
 
     [[nodiscard]] MultiVector() noexcept : GAElement()
     {
@@ -316,7 +314,7 @@ public:
     [[nodiscard]] MultiVector operator ~() const{
         float norm{ Norm() };
         float normSquared{ norm };
-        return MultiVector(
+        return {
             data[0] / normSquared,
             data[1] / normSquared,
             data[2] / normSquared,
@@ -333,7 +331,7 @@ public:
             -data[13] / normSquared,
             -data[14] / normSquared,
             data[15] / normSquared
-            );
+            };
     };
 
     [[nodiscard]] MultiVector operator* (const MultiVector& b) const;
@@ -377,10 +375,10 @@ public:
     inline float& e2() { return get(2); }
     inline float& e3() { return get(3); }
 
-    inline const float& e0() const { return get(0); }
-    inline const float& e1() const { return get(1); }
-    inline const float& e2() const { return get(2); }
-    inline const float& e3() const { return get(3); }
+    [[nodiscard]] inline const float& e0() const { return get(0); }
+    [[nodiscard]] inline const float& e1() const { return get(1); }
+    [[nodiscard]] inline const float& e2() const { return get(2); }
+    [[nodiscard]] inline const float& e3() const { return get(3); }
 
     OneBlade() : GAElement()
     {
@@ -422,12 +420,12 @@ public:
     {
         float norm{ Norm() };
         float normSquared{ norm * norm };
-        return OneBlade(
+        return {
             data[0] / normSquared,
             data[1] / normSquared,
             data[2] / normSquared,
             data[3] / normSquared
-        );
+        };
     }
 
     [[nodiscard]] MultiVector operator* (const MultiVector& b) const;
@@ -472,12 +470,12 @@ public:
     inline float& e31() { return get(4); }
     inline float& e12() { return get(5); }
 
-    inline const float& e01() const { return get(0); }
-    inline const float& e02() const { return get(1); }
-    inline const float& e03() const { return get(2); }
-    inline const float& e23() const { return get(3); }
-    inline const float& e31() const { return get(4); }
-    inline const float& e12() const { return get(5); }
+    [[nodiscard]] inline const float& e01() const { return get(0); }
+    [[nodiscard]] inline const float& e02() const { return get(1); }
+    [[nodiscard]] inline const float& e03() const { return get(2); }
+    [[nodiscard]] inline const float& e23() const { return get(3); }
+    [[nodiscard]] inline const float& e31() const { return get(4); }
+    [[nodiscard]] inline const float& e12() const { return get(5); }
 
     TwoBlade() : GAElement()
     {
@@ -503,14 +501,14 @@ public:
 
     [[nodiscard]] static TwoBlade LineFromPoints(float x1, float y1, float z1, float x2, float y2, float z2)
     {
-        return TwoBlade(
+        return {
             y1 * z2 - y2 * z1,
             z1 * x2 - z2 * x1,
             x1 * y2 - x2 * y1,
             x2 - x1,
             y2 - y1,
             z2 - z1
-            );
+            };
     }
 
     TwoBlade& Normalize()
@@ -539,14 +537,14 @@ public:
 
     [[nodiscard]] TwoBlade operator ~() const {
         float squareNorm{ Norm() * Norm() };
-        return TwoBlade(
+        return {
             -data[0] / squareNorm,
             -data[1] / squareNorm,
             -data[2] / squareNorm,
             -data[3] / squareNorm,
             -data[4] / squareNorm,
             -data[5] / squareNorm
-        );
+        };
     };
 
     [[nodiscard]] MultiVector operator* (const MultiVector& b) const;
@@ -588,10 +586,10 @@ public:
     inline float& e021() { return get(2); }
     inline float& e123() { return get(3); }
 
-    inline const float& e032() const { return get(0); }
-    inline const float& e013() const { return get(1); }
-    inline const float& e021() const { return get(2); }
-    inline const float& e123() const { return get(3); }
+    [[nodiscard]] inline const float& e032() const { return get(0); }
+    [[nodiscard]] inline const float& e013() const { return get(1); }
+    [[nodiscard]] inline const float& e021() const { return get(2); }
+    [[nodiscard]] inline const float& e123() const { return get(3); }
 
     [[nodiscard]] ThreeBlade() : GAElement()
     {
@@ -646,12 +644,12 @@ public:
     {
         float norm{ Norm() };
         float normSquared{ norm * norm };
-        return ThreeBlade(
+        return {
             -data[0] / normSquared,
             -data[1] / normSquared,
             -data[2] / normSquared,
             -data[3] / normSquared
-        );
+        };
     }
 
     [[nodiscard]] OneBlade operator! () const;
@@ -697,14 +695,14 @@ public:
     inline float& e12() { return get(6); }
     inline float& e0123() { return get(7); }
 
-    inline const float& s() const { return get(0); }
-    inline const float& e01() const { return get(1); }
-    inline const float& e02() const { return get(2); }
-    inline const float& e03() const { return get(3); }
-    inline const float& e23() const { return get(4); }
-    inline const float& e31() const { return get(5); }
-    inline const float& e12() const { return get(6); }
-    inline const float& e0123() const { return get(7); }
+    [[nodiscard]] inline const float& s() const { return get(0); }
+    [[nodiscard]] inline const float& e01() const { return get(1); }
+    [[nodiscard]] inline const float& e02() const { return get(2); }
+    [[nodiscard]] inline const float& e03() const { return get(3); }
+    [[nodiscard]] inline const float& e23() const { return get(4); }
+    [[nodiscard]] inline const float& e31() const { return get(5); }
+    [[nodiscard]] inline const float& e12() const { return get(6); }
+    [[nodiscard]] inline const float& e0123() const { return get(7); }
 
     [[nodiscard]] Motor() : GAElement()
     {
@@ -726,15 +724,9 @@ public:
         return { "", "e01", "e02", "e03", "e23", "e31", "e12", "e0123"};
     }
 
-    // Todo
-    //[[nodiscard]] Motor(float angle, float translation, const TwoBlade line) : GAElement()
-    //{
-    //    *this = Translation(translation, line) * Rotation(angle, line) * ~Translation(translation, line);
-    //}
-
-    [[nodiscard]] static Motor Translation(float translation, const TwoBlade line)
+    [[nodiscard]] static Motor Translation(float translation, const TwoBlade& line)
     {
-        float d{ -translation / (2 * line.VNorm()) };
+        const float d{ -translation / (2 * line.VNorm()) };
         return Motor{
             1,
             d * line[0],
@@ -747,9 +739,9 @@ public:
         };
     }
 
-    [[nodiscard]] static Motor Rotation(float angle, const TwoBlade line)
+    [[nodiscard]] static Motor Rotation(float angle, const TwoBlade& line)
     {
-        float mult{ -sin(angle * DEG_TO_RAD / 2) / line.Norm() };
+        const float mult{ -sin(angle * DEG_TO_RAD / 2) / line.Norm() };
         return Motor{
             cos(angle * DEG_TO_RAD /2),
             0,
@@ -769,7 +761,7 @@ public:
     [[nodiscard]] Motor Normalized() const
     {
         Motor d{};
-        float mult = 1 / Norm();
+        const float mult = 1 / Norm();
         for (size_t idx{}; idx < 8; idx++)
         {
             d[idx] = mult * data[idx];
@@ -792,7 +784,7 @@ public:
     [[nodiscard]] Motor operator ~() const {
         float norm{ Norm() };
         float normSquared{ norm * norm };
-        return Motor(
+        return {
             data[0] / normSquared ,
             -data[1] / normSquared,
             -data[2] / normSquared,
@@ -801,7 +793,7 @@ public:
             -data[5] / normSquared,
             -data[6] / normSquared,
             data[7] / normSquared
-        );
+        };
     };
 
     [[nodiscard]] MultiVector operator* (const MultiVector& b) const;
@@ -857,7 +849,7 @@ public:
     using GAElement::operator*;
     using GAElement::operator/;
 
-    std::string toString() const {
+    [[nodiscard]] static std::string toString() {
         return "GANull";
     }
 
@@ -883,22 +875,22 @@ public:
     }
 
     template <typename Derived>
-    friend [[nodiscard]] GANull operator* (const Derived& b, const GANull& element)
+    friend GANull operator* (const Derived& b, const GANull& element)
     {
         return GANull{};
     }
     template <typename Derived>
-    friend [[nodiscard]] GANull operator| (const Derived& b, const GANull& element)
+    friend GANull operator| (const Derived& b, const GANull& element)
     {
         return GANull{};
     }
     template <typename Derived>
-    friend [[nodiscard]] GANull operator^ (const Derived& b, const GANull& element)
+    friend GANull operator^ (const Derived& b, const GANull& element)
     {
         return GANull{};
     }
     template <typename Derived>
-    friend [[nodiscard]] GANull operator& (const Derived& b, const GANull& element)
+    friend GANull operator& (const Derived& b, const GANull& element)
     {
         return GANull{};
     }
