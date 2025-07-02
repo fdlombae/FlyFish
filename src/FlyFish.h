@@ -6,9 +6,9 @@
 #include <sstream>
 #include <numbers>
 
-class OneBlade;
-class TwoBlade;
-class ThreeBlade;
+class Vector;
+class BiVector;
+class TriVector;
 class Motor;
 class GANull;
 
@@ -59,11 +59,11 @@ public:
     }
 
     friend std::ostream& operator<<(std::ostream& os, const Derived& element) {
-        os << element.toString();
+        os << element.ToString();
         return os;
     }
 
-    [[nodiscard]] std::string toString() const {
+    [[nodiscard]] std::string ToString() const {
         std::ostringstream output;
         const auto& names = Derived::names();
         bool first = true;
@@ -307,12 +307,12 @@ public:
                  "e23", "e31", "e12", "e032", "e013", "e021", "e123", "e0123" };
     }
 
-    MultiVector& operator=(const ThreeBlade& b);
-    MultiVector& operator=(ThreeBlade&& b) noexcept;
-    MultiVector& operator=(const TwoBlade& b);
-    MultiVector& operator=(TwoBlade&& b) noexcept;
-    MultiVector& operator=(const OneBlade& b);
-    MultiVector& operator=(OneBlade&& b) noexcept;
+    MultiVector& operator=(const TriVector& b);
+    MultiVector& operator=(TriVector&& b) noexcept;
+    MultiVector& operator=(const BiVector& b);
+    MultiVector& operator=(BiVector&& b) noexcept;
+    MultiVector& operator=(const Vector& b);
+    MultiVector& operator=(Vector&& b) noexcept;
     MultiVector& operator=(const Motor& b);
     MultiVector& operator=(Motor&& b) noexcept;
 
@@ -325,9 +325,9 @@ public:
         return std::sqrt(data[1] * data[1] + data[5] * data[5] + data[6] * data[6] + data[7] * data[7] + data[11] * data[11] + data[12] * data[12] + data[13] * data[13] + data[15] * data[15]);
     }
 
-    [[nodiscard]] OneBlade Grade1() const;
-    [[nodiscard]] TwoBlade Grade2() const;
-    [[nodiscard]] ThreeBlade Grade3() const;
+    [[nodiscard]] Vector Grade1() const;
+    [[nodiscard]] BiVector Grade2() const;
+    [[nodiscard]] TriVector Grade3() const;
     [[nodiscard]] Motor ToMotor() const;
 
     [[nodiscard]] MultiVector operator ~() const{
@@ -354,35 +354,35 @@ public:
     };
 
     [[nodiscard]] MultiVector operator* (const MultiVector& b) const;
-    [[nodiscard]] MultiVector operator* (const ThreeBlade& b) const;
+    [[nodiscard]] MultiVector operator* (const TriVector& b) const;
     [[nodiscard]] MultiVector operator* (const Motor& b) const;
-    [[nodiscard]] MultiVector operator* (const TwoBlade& b) const;
-    [[nodiscard]] MultiVector operator* (const OneBlade& b) const;
+    [[nodiscard]] MultiVector operator* (const BiVector& b) const;
+    [[nodiscard]] MultiVector operator* (const Vector& b) const;
 
     [[nodiscard]] MultiVector operator| (const MultiVector& b) const;
-    [[nodiscard]] MultiVector operator| (const ThreeBlade& b) const;
-    [[nodiscard]] MultiVector operator| (const TwoBlade& b) const;
-    [[nodiscard]] MultiVector operator| (const OneBlade& b) const;
+    [[nodiscard]] MultiVector operator| (const TriVector& b) const;
+    [[nodiscard]] MultiVector operator| (const BiVector& b) const;
+    [[nodiscard]] MultiVector operator| (const Vector& b) const;
     [[nodiscard]] MultiVector operator| (const Motor& b) const;
 
 
     [[nodiscard]] MultiVector operator& (const MultiVector& b) const;
-    [[nodiscard]] MultiVector operator& (const ThreeBlade& b) const;
-    [[nodiscard]] MultiVector operator& (const TwoBlade& b) const;
-    [[nodiscard]] MultiVector operator& (const OneBlade& b) const;
+    [[nodiscard]] MultiVector operator& (const TriVector& b) const;
+    [[nodiscard]] MultiVector operator& (const BiVector& b) const;
+    [[nodiscard]] MultiVector operator& (const Vector& b) const;
     [[nodiscard]] MultiVector operator& (const Motor& b) const;
 
     [[nodiscard]] MultiVector operator^(const MultiVector& b) const;
-    [[nodiscard]] MultiVector operator^(const ThreeBlade& b) const;
-    [[nodiscard]] MultiVector operator^(const TwoBlade& b) const;
-    [[nodiscard]] MultiVector operator^(const OneBlade& b) const;
+    [[nodiscard]] MultiVector operator^(const TriVector& b) const;
+    [[nodiscard]] MultiVector operator^(const BiVector& b) const;
+    [[nodiscard]] MultiVector operator^(const Vector& b) const;
     [[nodiscard]] MultiVector operator^(const Motor& b) const;
 
 
     [[nodiscard]] MultiVector operator! () const;
 };
 
-class OneBlade final : public GAElement<OneBlade, 4>
+class Vector final : public GAElement<Vector, 4>
 {
 public:
     using GAElement::GAElement;
@@ -399,11 +399,11 @@ public:
     [[nodiscard]] inline const float& e2() const { return get(2); }
     [[nodiscard]] inline const float& e3() const { return get(3); }
 
-    OneBlade() : GAElement()
+    Vector() : GAElement()
     {
     }
 
-    [[nodiscard]] OneBlade(float e0, float e1, float e2, float e3) : GAElement()
+    [[nodiscard]] Vector(float e0, float e1, float e2, float e3) : GAElement()
     {
         data[0] = e0;
         data[1] = e1;
@@ -420,7 +420,7 @@ public:
         return std::sqrt(data[1] * data[1] + data[2] * data[2] + data[3] * data[3]);
     }
 
-    [[nodiscard]] OneBlade operator ~() const
+    [[nodiscard]] Vector operator ~() const
     {
         float norm{ Norm() };
         float normSquared{ norm * norm };
@@ -433,34 +433,34 @@ public:
     }
 
     [[nodiscard]] MultiVector operator* (const MultiVector& b) const;
-    [[nodiscard]] Motor operator* (const ThreeBlade& b) const;
-    [[nodiscard]] MultiVector operator* (const TwoBlade& b) const;
-    [[nodiscard]] Motor operator* (const OneBlade& b) const;
+    [[nodiscard]] Motor operator* (const TriVector& b) const;
+    [[nodiscard]] MultiVector operator* (const BiVector& b) const;
+    [[nodiscard]] Motor operator* (const Vector& b) const;
     [[nodiscard]] MultiVector operator* (const Motor& b) const;
 
     [[nodiscard]] MultiVector operator& (const MultiVector& b) const;
-    [[nodiscard]] float operator& (const ThreeBlade& b) const;
-    [[nodiscard]] GANull operator& (const TwoBlade& b) const;
-    [[nodiscard]] GANull operator& (const OneBlade& b) const;
-    [[nodiscard]] OneBlade operator& (const Motor& b) const;
+    [[nodiscard]] float operator& (const TriVector& b) const;
+    [[nodiscard]] GANull operator& (const BiVector& b) const;
+    [[nodiscard]] GANull operator& (const Vector& b) const;
+    [[nodiscard]] Vector operator& (const Motor& b) const;
 
     [[nodiscard]] MultiVector operator| (const MultiVector& b) const;
-    [[nodiscard]] TwoBlade operator| (const ThreeBlade& b) const;
-    [[nodiscard]] OneBlade operator| (const TwoBlade& b) const;
-    [[nodiscard]] float operator| (const OneBlade& b) const;
+    [[nodiscard]] BiVector operator| (const TriVector& b) const;
+    [[nodiscard]] Vector operator| (const BiVector& b) const;
+    [[nodiscard]] float operator| (const Vector& b) const;
     [[nodiscard]] MultiVector operator| (const Motor& b) const;
 
     [[nodiscard]] MultiVector operator^(const MultiVector& b) const;
-    [[nodiscard]] MultiVector operator^(const ThreeBlade& b) const;
-    [[nodiscard]] ThreeBlade operator^ (const TwoBlade& b) const;
-    [[nodiscard]] TwoBlade operator^(const OneBlade& b) const;
+    [[nodiscard]] MultiVector operator^(const TriVector& b) const;
+    [[nodiscard]] TriVector operator^ (const BiVector& b) const;
+    [[nodiscard]] BiVector operator^(const Vector& b) const;
     [[nodiscard]] MultiVector operator^(const Motor& b) const;
 
 
-    [[nodiscard]] ThreeBlade operator! () const;
+    [[nodiscard]] TriVector operator! () const;
 };
 
-class TwoBlade final : public GAElement<TwoBlade, 6>
+class BiVector final : public GAElement<BiVector, 6>
 {
 public:
     using GAElement::GAElement;
@@ -481,11 +481,11 @@ public:
     [[nodiscard]] inline const float& e31() const { return get(4); }
     [[nodiscard]] inline const float& e12() const { return get(5); }
 
-    TwoBlade() : GAElement()
+    BiVector() : GAElement()
     {
     }
 
-    [[nodiscard]] TwoBlade(float e01, float e02, float e03, float e23, float e31, float e12) : GAElement()
+    [[nodiscard]] BiVector(float e01, float e02, float e03, float e23, float e31, float e12) : GAElement()
     {
         data[0] = e01;
         data[1] = e02;
@@ -499,11 +499,11 @@ public:
         return { "e01", "e02", "e03", "e23", "e31", "e12"};
     }
 
-    [[nodiscard]] float PermutedDot(const TwoBlade& b) const {
+    [[nodiscard]] float PermutedDot(const BiVector& b) const {
         return data[3] * b[0] + data[4] * b[1] + data[5] * b[2] + data[2] * b[5] + data[1] * b[4] + data[0] * b[3];
     }
 
-    [[nodiscard]] static TwoBlade LineFromPoints(float x1, float y1, float z1, float x2, float y2, float z2)
+    [[nodiscard]] static BiVector LineFromPoints(float x1, float y1, float z1, float x2, float y2, float z2)
     {
         return {
             y1 * z2 - y2 * z1,
@@ -524,7 +524,7 @@ public:
         return std::sqrt(data[0] * data[0] + data[1] * data[1] + data[2] * data[2]);
     }
 
-    [[nodiscard]] TwoBlade operator ~() const {
+    [[nodiscard]] BiVector operator ~() const {
         float squareNorm{ Norm() * Norm() };
         return {
             -data[0] / squareNorm,
@@ -537,33 +537,33 @@ public:
     };
 
     [[nodiscard]] MultiVector operator* (const MultiVector& b) const;
-    [[nodiscard]] MultiVector operator* (const ThreeBlade& b) const;
-    [[nodiscard]] Motor operator* (const TwoBlade& b) const;
-    [[nodiscard]] MultiVector operator* (const OneBlade& b) const;
+    [[nodiscard]] MultiVector operator* (const TriVector& b) const;
+    [[nodiscard]] Motor operator* (const BiVector& b) const;
+    [[nodiscard]] MultiVector operator* (const Vector& b) const;
     [[nodiscard]] Motor operator* (const Motor& b) const;
 
     [[nodiscard]] MultiVector operator| (const MultiVector& b) const;
-    [[nodiscard]] OneBlade operator| (const ThreeBlade& b) const;
-    [[nodiscard]] float operator| (const TwoBlade& b) const;
-    [[nodiscard]] OneBlade operator| (const OneBlade& b) const;
+    [[nodiscard]] Vector operator| (const TriVector& b) const;
+    [[nodiscard]] float operator| (const BiVector& b) const;
+    [[nodiscard]] Vector operator| (const Vector& b) const;
     [[nodiscard]] Motor operator| (const Motor& b) const;
 
     [[nodiscard]] MultiVector operator& (const MultiVector& b) const;
-    [[nodiscard]] OneBlade operator & (const ThreeBlade& b) const;
-    [[nodiscard]] float operator & (const TwoBlade& b) const;
-    [[nodiscard]] GANull operator& (const OneBlade& b) const;
+    [[nodiscard]] Vector operator & (const TriVector& b) const;
+    [[nodiscard]] float operator & (const BiVector& b) const;
+    [[nodiscard]] GANull operator& (const Vector& b) const;
     [[nodiscard]] MultiVector operator& (const Motor& b) const;
 
     [[nodiscard]] MultiVector operator ^ (const MultiVector& b) const;
-    [[nodiscard]] GANull operator ^ (const ThreeBlade& b) const;
-    [[nodiscard]] MultiVector operator ^ (const TwoBlade& b) const;
-    [[nodiscard]] ThreeBlade operator ^ (const OneBlade& b) const;
+    [[nodiscard]] GANull operator ^ (const TriVector& b) const;
+    [[nodiscard]] MultiVector operator ^ (const BiVector& b) const;
+    [[nodiscard]] TriVector operator ^ (const Vector& b) const;
     [[nodiscard]] Motor operator ^ (const Motor& b) const;
     
-    [[nodiscard]] TwoBlade operator! () const;
+    [[nodiscard]] BiVector operator! () const;
 };
 
-class ThreeBlade final : public GAElement<ThreeBlade, 4>
+class TriVector final : public GAElement<TriVector, 4>
 {
 public:
     using GAElement::GAElement;
@@ -580,11 +580,11 @@ public:
     [[nodiscard]] inline const float& e021() const { return get(2); }
     [[nodiscard]] inline const float& e123() const { return get(3); }
 
-    [[nodiscard]] ThreeBlade() : GAElement()
+    [[nodiscard]] TriVector() : GAElement()
     {
     }
 
-    [[nodiscard]] ThreeBlade(float x, float y, float z) : GAElement()
+    [[nodiscard]] TriVector(float x, float y, float z) : GAElement()
     {
         data[0] = x;
         data[1] = y;
@@ -592,7 +592,7 @@ public:
         data[3] = 1;
     }
 
-    [[nodiscard]] ThreeBlade(float e032, float e013, float e021, float e123) : GAElement()
+    [[nodiscard]] TriVector(float e032, float e013, float e021, float e123) : GAElement()
     {
         data[0] = e032;
         data[1] = e013;
@@ -614,7 +614,7 @@ public:
         return std::sqrt(data[0] * data[0] + data[1] * data[1] + data[2] * data[2]);
     }
 
-    [[nodiscard]] ThreeBlade operator ~() const
+    [[nodiscard]] TriVector operator ~() const
     {
         float norm{ Norm() };
         float normSquared{ norm * norm };
@@ -626,31 +626,31 @@ public:
         };
     }
 
-    [[nodiscard]] OneBlade operator! () const;
+    [[nodiscard]] Vector operator! () const;
 
     [[nodiscard]] MultiVector operator* (const MultiVector& b) const;
-    [[nodiscard]] Motor operator* (const ThreeBlade& b) const;
-    [[nodiscard]] MultiVector operator* (const TwoBlade& b) const;
-    [[nodiscard]] Motor operator* (const OneBlade& b) const;
+    [[nodiscard]] Motor operator* (const TriVector& b) const;
+    [[nodiscard]] MultiVector operator* (const BiVector& b) const;
+    [[nodiscard]] Motor operator* (const Vector& b) const;
     [[nodiscard]] MultiVector operator* (const Motor& b) const;
 
     [[nodiscard]] MultiVector operator| (const MultiVector& b) const;
-    [[nodiscard]] float operator| (const ThreeBlade& b) const;
-    [[nodiscard]] OneBlade operator| (const TwoBlade& b) const;
-    [[nodiscard]] TwoBlade operator| (const OneBlade& b) const;
-    [[nodiscard]] OneBlade operator| (const Motor& b) const;
+    [[nodiscard]] float operator| (const TriVector& b) const;
+    [[nodiscard]] Vector operator| (const BiVector& b) const;
+    [[nodiscard]] BiVector operator| (const Vector& b) const;
+    [[nodiscard]] Vector operator| (const Motor& b) const;
 
     [[nodiscard]] MultiVector operator& (const MultiVector& b) const;
-    [[nodiscard]] TwoBlade operator& (const ThreeBlade& b) const;
-    [[nodiscard]] OneBlade operator& (const TwoBlade& b) const;
-    [[nodiscard]] float operator& (const OneBlade& b) const;
+    [[nodiscard]] BiVector operator& (const TriVector& b) const;
+    [[nodiscard]] Vector operator& (const BiVector& b) const;
+    [[nodiscard]] float operator& (const Vector& b) const;
     [[nodiscard]] MultiVector operator& (const Motor& b) const;
 
     [[nodiscard]] MultiVector operator^(const MultiVector& b) const;
-    [[nodiscard]] GANull operator^(const ThreeBlade& b) const;
-    [[nodiscard]] GANull operator^(const TwoBlade& b) const;
-    [[nodiscard]] float operator^(const OneBlade& b) const;
-    [[nodiscard]] ThreeBlade operator^(const Motor& b) const;
+    [[nodiscard]] GANull operator^(const TriVector& b) const;
+    [[nodiscard]] GANull operator^(const BiVector& b) const;
+    [[nodiscard]] float operator^(const Vector& b) const;
+    [[nodiscard]] TriVector operator^(const Motor& b) const;
 };
 
 class Motor final : public GAElement<Motor, 8>
@@ -698,7 +698,7 @@ public:
         return { "", "e01", "e02", "e03", "e23", "e31", "e12", "e0123"};
     }
 
-    [[nodiscard]] static Motor Translation(float translation, const TwoBlade& line)
+    [[nodiscard]] static Motor Translation(float translation, const BiVector& line)
     {
         const float d{ -translation / (2 * line.VNorm()) };
         return Motor{
@@ -713,7 +713,7 @@ public:
         };
     }
 
-    [[nodiscard]] static Motor Rotation(float angle, const TwoBlade& line)
+    [[nodiscard]] static Motor Rotation(float angle, const BiVector& line)
     {
         const float mult{ -sin(angle * DEG_TO_RAD / 2) / line.Norm() };
         return Motor{
@@ -738,7 +738,7 @@ public:
         return std::sqrt(data[1] * data[1] + data[2] * data[2] + data[3] * data[3] + data[7] * data[7]);
     }
 
-    [[nodiscard]] TwoBlade Grade2() const;
+    [[nodiscard]] BiVector Grade2() const;
 
     [[nodiscard]] Motor operator ~() const {
         float norm{ Norm() };
@@ -756,30 +756,30 @@ public:
     };
 
     [[nodiscard]] MultiVector operator* (const MultiVector& b) const;
-    [[nodiscard]] MultiVector operator* (const ThreeBlade& b) const;
-    [[nodiscard]] Motor operator* (const TwoBlade& b) const;
-    [[nodiscard]] MultiVector operator* (const OneBlade& b) const;
+    [[nodiscard]] MultiVector operator* (const TriVector& b) const;
+    [[nodiscard]] Motor operator* (const BiVector& b) const;
+    [[nodiscard]] MultiVector operator* (const Vector& b) const;
     [[nodiscard]] Motor operator* (const Motor& b) const;
 
     [[nodiscard]] MultiVector operator| (const MultiVector& b) const;
-    [[nodiscard]] MultiVector operator| (const ThreeBlade& b) const;
-    [[nodiscard]] Motor operator| (const TwoBlade& b) const;
-    [[nodiscard]] MultiVector operator| (const OneBlade& b) const;
+    [[nodiscard]] MultiVector operator| (const TriVector& b) const;
+    [[nodiscard]] Motor operator| (const BiVector& b) const;
+    [[nodiscard]] MultiVector operator| (const Vector& b) const;
     [[nodiscard]] Motor operator| (const Motor& b) const;
 
     [[nodiscard]] MultiVector operator& (const MultiVector& b) const;
-    [[nodiscard]] MultiVector operator& (const ThreeBlade& b) const;
-    [[nodiscard]] Motor operator& (const TwoBlade& b) const;
-    [[nodiscard]] OneBlade operator& (const OneBlade& b) const;
+    [[nodiscard]] MultiVector operator& (const TriVector& b) const;
+    [[nodiscard]] Motor operator& (const BiVector& b) const;
+    [[nodiscard]] Vector operator& (const Vector& b) const;
     [[nodiscard]] Motor operator& (const Motor& b) const;
 
     [[nodiscard]] MultiVector operator^(const MultiVector& b) const;
-    [[nodiscard]] ThreeBlade operator^(const ThreeBlade& b) const;
-    [[nodiscard]] Motor operator^(const TwoBlade& b) const;
-    [[nodiscard]] MultiVector operator^(const OneBlade& b) const;
+    [[nodiscard]] TriVector operator^(const TriVector& b) const;
+    [[nodiscard]] Motor operator^(const BiVector& b) const;
+    [[nodiscard]] MultiVector operator^(const Vector& b) const;
     [[nodiscard]] MultiVector operator^(const Motor& b) const;
 
-    Motor& operator += (const TwoBlade& b)
+    Motor& operator += (const BiVector& b)
     {
         for (size_t idx{}; idx < 6; idx++)
         {
@@ -788,7 +788,7 @@ public:
 
         return (*this);
     }
-    Motor& operator -= (const TwoBlade& b)
+    Motor& operator -= (const BiVector& b)
     {
         for (size_t idx{}; idx < 6; idx++)
         {
@@ -808,7 +808,7 @@ public:
     using GAElement::operator*;
     using GAElement::operator/;
 
-    [[nodiscard]] static std::string toString() {
+    [[nodiscard]] static std::string ToString() {
         return "GANull";
     }
 

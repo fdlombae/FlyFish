@@ -1,69 +1,73 @@
 #include "../src/FlyFish.h"
 #include <gtest/gtest.h>
 #include <cmath>
+#include <string>
+#include <sstream>
 
 // Example class to be tested
 class Elements {
 public:
-    Elements() {};
+    Elements() = default;
 
-    MultiVector MultiVectorA()
+    static MultiVector MultiVectorA()
     {
-        return MultiVector(2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17);
+        return {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17};
     }
-    MultiVector MultiVectorB()
+
+    static MultiVector MultiVectorB()
     {
-        return MultiVector(3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18);
+        return {3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18};
     }
-    MultiVector MultiVectorC()
+    static MultiVector MultiVectorC()
     {
-        return MultiVector(-4, 5, -6, 7, -8, 9, -10, 11, -12, 13, -14, 15, -16, 17, -18, 19);
+        return {-4, 5, -6, 7, -8, 9, -10, 11, -12, 13, -14, 15, -16, 17, -18, 19};
     }
-    OneBlade OneBladeA()
+    static Vector VectorA()
     {
-        return OneBlade(2, 3, 4, 5);
+        return {2, 3, 4, 5};
     }
-    OneBlade OneBladeB()
+    static Vector VectorB()
     {
-        return OneBlade(3, 4, 5, 6);
+        return {3, 4, 5, 6};
     }
-    OneBlade OneBladeC()
+    static Vector VectorC()
     {
-        return OneBlade(-4, 5, -6, 7);
+        return {-4, 5, -6, 7};
     }
-    TwoBlade TwoBladeA()
+
+    static BiVector BiVectorA()
     {
-        return TwoBlade(2, 3, 4, 5, 6, 7);
+        return {2, 3, 4, 5, 6, 7};
     }
-    TwoBlade TwoBladeB()
+    static BiVector BiVectorB()
     {
-        return TwoBlade(3, 4, 5, 6, 7, 8);
+        return {3, 4, 5, 6, 7, 8};
     }
-    TwoBlade TwoBladeC()
+    static BiVector BiVectorC()
     {
-        return TwoBlade(-4, 5, -6, 7, -8, 9);
+        return {-4, 5, -6, 7, -8, 9};
     }
-    ThreeBlade ThreeBladeA()
+    static TriVector TriVectorA()
     {
-        return ThreeBlade(2, 3, 4, 5);
+        return {2, 3, 4, 5};
     }
-    ThreeBlade ThreeBladeB()
+    static TriVector TriVectorB()
     {
-        return ThreeBlade(3, 4, 5, 6);
+        return {3, 4, 5, 6};
     }
-    ThreeBlade ThreeBladeC()
+    static TriVector TriVectorC()
     {
-        return ThreeBlade(-4, 5, -6, 7);
+        return {-4, 5, -6, 7};
     }
-    Motor MotorA()
+    static Motor MotorA()
     {
         return Motor{ 2, 3, 4, 5, 6, 7, 8, 9 };
     }
-    Motor MotorB()
+    static Motor MotorB()
     {
         return Motor{ 3, 4, 5, 6, 7, 8, 9, 10 };
     }
-    Motor MotorC()
+    static Motor MotorC()
     {
         return Motor{ -4, 5, -6, 7, -8, 9, -10, 11 };
     }
@@ -82,23 +86,23 @@ protected:
         delete elements;
     }
 
-    Elements* elements{};  // Shared object for all tests
+    Elements* elements = nullptr;  // Shared object for all tests
 };
 
 // GAElement
 TEST_F(ElementsTest, GAElementToString) {
-    MultiVector multi{ -2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5.2f, -10 };
-    ThreeBlade three{ 5, 0, -3, 2.5f };
-    TwoBlade two{1, 2, 0, 0, 0, 0 };
-    OneBlade one{ -1, 2.5f, 0, 0 };
-    Motor motor{ 1, 3, 0, 0, 0, 0, 0, -1.0f };
+    const MultiVector multi{ -2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5.2f, -10 };
+    const TriVector three{ 5, 0, -3, 2.5f };
+    const BiVector two{1, 2, 0, 0, 0, 0 };
+    const Vector one{ -1, 2.5f, 0, 0 };
+    const Motor motor{ 1, 3, 0, 0, 0, 0, 0, -1.0f };
 
-    EXPECT_EQ(multi.toString(), "-2 + 5.2*e123 - 10*e0123");
-    EXPECT_EQ(three.toString(), "5*e032 - 3*e021 + 2.5*e123");
-    EXPECT_EQ(two.toString(), "e01 + 2*e02");
-    EXPECT_EQ(one.toString(), "-e0 + 2.5*e1");
-    EXPECT_EQ(motor.toString(), "1 + 3*e01 - e0123");
-    EXPECT_EQ(GANull{}.toString(), "GANull");
+    EXPECT_EQ(multi.ToString(), "-2 + 5.2*e123 - 10*e0123");
+    EXPECT_EQ(three.ToString(), "5*e032 - 3*e021 + 2.5*e123");
+    EXPECT_EQ(two.ToString(), "e01 + 2*e02");
+    EXPECT_EQ(one.ToString(), "-e0 + 2.5*e1");
+    EXPECT_EQ(motor.ToString(), "1 + 3*e01 - e0123");
+    EXPECT_EQ(GANull{}.ToString(), "GANull");
 }
 
 TEST_F(ElementsTest, GAElementOStreamOutput) {
@@ -117,72 +121,72 @@ TEST_F(ElementsTest, GAElementOStreamOutput) {
 }
 
 TEST_F(ElementsTest, GAElementPlus) {
-    MultiVector a{ elements->MultiVectorA() };
-    MultiVector b{ elements->MultiVectorB() };
+    const MultiVector a{ Elements::MultiVectorA() };
+    const MultiVector b{ Elements::MultiVectorB() };
 
-    MultiVector res1{ a + b };
-    MultiVector res2{ b + elements->MultiVectorA() };
+    const MultiVector res1{ a + b };
+    const MultiVector res2{ b + Elements::MultiVectorA() };
 
-    MultiVector correct{ 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35 };
+    const MultiVector correct{ 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35 };
 
     EXPECT_EQ(res1, correct);
     EXPECT_EQ(res2, correct);
 }
 
 TEST_F(ElementsTest, GAElementPlusEqual) {
-    MultiVector a{ elements->MultiVectorA() };
-    MultiVector b{ elements->MultiVectorB() };
+    MultiVector a{ Elements::MultiVectorA() };
+    const MultiVector b{ Elements::MultiVectorB() };
 
     a += b;
 
-    MultiVector correct{ 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35 };
+    const MultiVector correct{ 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35 };
 
     EXPECT_EQ(a, correct);
 }
 
 TEST_F(ElementsTest, GAElementMinus) {
-    MultiVector a{ elements->MultiVectorA() };
-    MultiVector b{ elements->MultiVectorB() };
+    const MultiVector a{ Elements::MultiVectorA() };
+    const MultiVector b{ Elements::MultiVectorB() };
 
-    MultiVector res1{ a - b };
-    MultiVector res2{ b - elements->MultiVectorA() };
+    const MultiVector res1{ a - b };
+    const MultiVector res2{ b - Elements::MultiVectorA() };
 
-    MultiVector correct1{ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
-    MultiVector correct2{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+    const MultiVector correct1{ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+    const MultiVector correct2{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
 }
 
 TEST_F(ElementsTest, GAElementMinusEqual) {
-    MultiVector a{ elements->MultiVectorA() };
-    MultiVector b{ elements->MultiVectorB() };
+    MultiVector a{ Elements::MultiVectorA() };
+    const MultiVector b{ Elements::MultiVectorB() };
 
     a -= b;
 
-    MultiVector correct{ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+    const MultiVector correct{ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
 
     EXPECT_EQ(a, correct);
 }
 
 TEST_F(ElementsTest, GAElementProxyReferencing) {
-    MultiVector multiVector{ elements->MultiVectorA() };
-    ThreeBlade threeBlade{ elements->ThreeBladeA() };
-    TwoBlade twoBlade{ elements->TwoBladeA() };
-    OneBlade oneBlade{ elements->OneBladeA() };
-    Motor motor{ elements->MotorA() };
+    MultiVector multiVector{ Elements::MultiVectorA() };
+    TriVector TriVector{ Elements::TriVectorA() };
+    BiVector BiVector{ Elements::BiVectorA() };
+    Vector Vector{ Elements::VectorA() };
+    Motor motor{ Elements::MotorA() };
     
     EXPECT_EQ(multiVector.s(), multiVector[0]);
     EXPECT_EQ(multiVector.e0(), multiVector[1]);
 
-    EXPECT_EQ(threeBlade.e032(), threeBlade[0]);
-    EXPECT_EQ(threeBlade.e123(), threeBlade[3]);
+    EXPECT_EQ(TriVector.e032(), TriVector[0]);
+    EXPECT_EQ(TriVector.e123(), TriVector[3]);
 
-    EXPECT_EQ(twoBlade.e01(), twoBlade[0]);
-    EXPECT_EQ(twoBlade.e23(), twoBlade[3]);
+    EXPECT_EQ(BiVector.e01(), BiVector[0]);
+    EXPECT_EQ(BiVector.e23(), BiVector[3]);
 
-    EXPECT_EQ(oneBlade.e0(), oneBlade[0]);
-    EXPECT_EQ(oneBlade.e3(), oneBlade[3]);
+    EXPECT_EQ(Vector.e0(), Vector[0]);
+    EXPECT_EQ(Vector.e3(), Vector[3]);
 
     EXPECT_EQ(motor.s(), motor[0]);
     EXPECT_EQ(motor.e0123(), motor[7]);
@@ -190,9 +194,9 @@ TEST_F(ElementsTest, GAElementProxyReferencing) {
 
 // MultiVector
 TEST_F(ElementsTest, MultiVectorEqual) {
-    MultiVector a{ elements->MultiVectorA() };
-    MultiVector aDuplicate{ elements->MultiVectorA() };
-    MultiVector b{ elements->MultiVectorB() };
+    const MultiVector a{ Elements::MultiVectorA() };
+    const MultiVector aDuplicate{ Elements::MultiVectorA() };
+    const MultiVector b{ Elements::MultiVectorB() };
 
     EXPECT_FALSE(a == b);
     EXPECT_TRUE(a == aDuplicate);
@@ -200,9 +204,9 @@ TEST_F(ElementsTest, MultiVectorEqual) {
 }
 
 TEST_F(ElementsTest, MultiVectorRoundedEqual) {
-    MultiVector a{ elements->MultiVectorA() };
-    MultiVector aDuplicate{ elements->MultiVectorA() };
-    MultiVector b{ elements->MultiVectorB() };
+    MultiVector a{ Elements::MultiVectorA() };
+    const MultiVector aDuplicate{ Elements::MultiVectorA() };
+    const MultiVector b{ Elements::MultiVectorB() };
 
     EXPECT_FALSE(a.RoundedEqual(b, 0.00001f));
     EXPECT_TRUE(a.RoundedEqual(aDuplicate, 0.00001f));
@@ -215,13 +219,13 @@ TEST_F(ElementsTest, MultiVectorRoundedEqual) {
 }
 
 TEST_F(ElementsTest, MultiVectorScalarProduct) {
-    MultiVector a{ elements->MultiVectorA() };
-    MultiVector aDuplicate{ elements->MultiVectorA() };
+    const MultiVector a{ Elements::MultiVectorA() };
+    const MultiVector aDuplicate{ Elements::MultiVectorA() };
 
-    MultiVector res1{ 2.f * a };
-    MultiVector res2{ a * 2.f };
+    const MultiVector res1{ 2.f * a };
+    const MultiVector res2{ a * 2.f };
 
-    MultiVector correct{ 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34 };
+    const MultiVector correct{ 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34 };
 
     EXPECT_EQ(res1, correct);
     EXPECT_EQ(res2, correct);
@@ -230,12 +234,12 @@ TEST_F(ElementsTest, MultiVectorScalarProduct) {
 }
 
 TEST_F(ElementsTest, MultiVectorScalarDivision) {
-    MultiVector a{ elements->MultiVectorA() };
-    MultiVector aDuplicate{ elements->MultiVectorA() };
+    const MultiVector a{ Elements::MultiVectorA() };
+    const MultiVector aDuplicate{ Elements::MultiVectorA() };
 
-    MultiVector res1{ a / 2.f };
+    const MultiVector res1{ a / 2.f };
 
-    MultiVector correct{ 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5 };
+    const MultiVector correct{ 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5 };
 
     EXPECT_EQ(res1, correct);
 
@@ -243,19 +247,19 @@ TEST_F(ElementsTest, MultiVectorScalarDivision) {
 }
 
 TEST_F(ElementsTest, MultiVectorMultiVectorGeometricProduct) {
-    MultiVector a{ elements->MultiVectorA() };
-    MultiVector aDuplicate{ elements->MultiVectorA() };
-    MultiVector b{ elements->MultiVectorB() };
-    MultiVector bDuplicate{ elements->MultiVectorB() };
-    MultiVector c{ elements->MultiVectorC() };
+    const MultiVector a{ Elements::MultiVectorA() };
+    const MultiVector aDuplicate{ Elements::MultiVectorA() };
+    const MultiVector b{ Elements::MultiVectorB() };
+    const MultiVector bDuplicate{ Elements::MultiVectorB() };
+    const MultiVector c{ Elements::MultiVectorC() };
 
-    MultiVector res1{ a * b };
-    MultiVector res2{ a * c };
-    MultiVector res3{ b * a };
+    const MultiVector res1{ a * b };
+    const MultiVector res2{ a * c };
+    const MultiVector res3{ b * a };
 
-    MultiVector correct1{ -572, 1028, -322, -356, -378, -314, -404, -374, 200, 238, 276, -14, -4, -18, 464, 636 };
-    MultiVector correct2{ 388, 492, 664, -8, 152, -918, -478, -274, -4, 4, -516, 666, -226, 350, -246, 24 };
-    MultiVector correct3{ -572, 1012, -326, -348, -382, -310, -388, -370, 200, 238, 276, -10, 12, -14, 464, 716 };
+    const MultiVector correct1{ -572, 1028, -322, -356, -378, -314, -404, -374, 200, 238, 276, -14, -4, -18, 464, 636 };
+    const MultiVector correct2{ 388, 492, 664, -8, 152, -918, -478, -274, -4, 4, -516, 666, -226, 350, -246, 24 };
+    const MultiVector correct3{ -572, 1012, -326, -348, -382, -310, -388, -370, 200, 238, 276, -10, 12, -14, 464, 716 };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
@@ -265,35 +269,17 @@ TEST_F(ElementsTest, MultiVectorMultiVectorGeometricProduct) {
     EXPECT_EQ(b, bDuplicate);
 }
 
-TEST_F(ElementsTest, MultiVectorThreeBladeGeometricProduct) {
-    MultiVector a{ elements->MultiVectorA() };
-    MultiVector aDuplicate{ elements->MultiVectorA() };
-    ThreeBlade b{ elements->ThreeBladeB() };
-    ThreeBlade c{ elements->ThreeBladeC() };
+TEST_F(ElementsTest, MultiVectorTriVectorGeometricProduct) {
+    const MultiVector a{ Elements::MultiVectorA() };
+    const MultiVector aDuplicate{ Elements::MultiVectorA() };
+    const TriVector b{ Elements::TriVectorB() };
+    const TriVector c{ Elements::TriVectorC() };
 
-    MultiVector res1{ a * b };
-    MultiVector res2{ a * c };
+    const MultiVector res1{ a * b };
+    const MultiVector res2{ a * c };
 
-    MultiVector correct1{ -96, 32, -60, -66, -72, 29, 22, 9, 24, 30, 36, -43, -26, -51, 12, 80 };
-    MultiVector correct2{ -112, -176, -70, -77, -84, 215, 18, 161, 28, 35, 42, 69, -58, -169, 14, -6 };
-
-    EXPECT_EQ(res1, correct1);
-    EXPECT_EQ(res2, correct2);
-
-    EXPECT_EQ(a, aDuplicate);
-}
-
-TEST_F(ElementsTest, MultiVectorTwoBladeGeometricProduct) {
-    MultiVector a{ elements->MultiVectorA() };
-    MultiVector aDuplicate{ elements->MultiVectorA() };
-    TwoBlade b{ elements->TwoBladeB() };
-    TwoBlade c{ elements->TwoBladeC() };
-
-    MultiVector res1{ a * b };
-    MultiVector res2{ a * c };
-
-    MultiVector correct1{ -233, 234, -94, -116, -126, -104, -95, -134, 8, 22, 12, 24, 55, 50, 107, 304 };
-    MultiVector correct2{ -90, 141, -205, 122, -77, -145, 134, -147, -181, -10, 175, -391, 116, 119, 42, 9 };
+    const MultiVector correct1{ -96, 32, -60, -66, -72, 29, 22, 9, 24, 30, 36, -43, -26, -51, 12, 80 };
+    const MultiVector correct2{ -112, -176, -70, -77, -84, 215, 18, 161, 28, 35, 42, 69, -58, -169, 14, -6 };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
@@ -301,17 +287,35 @@ TEST_F(ElementsTest, MultiVectorTwoBladeGeometricProduct) {
     EXPECT_EQ(a, aDuplicate);
 }
 
-TEST_F(ElementsTest, MultiVectorOneBladeGeometricProduct) {
-    MultiVector a{ elements->MultiVectorA() };
-    MultiVector aDuplicate{ elements->MultiVectorA() };
-    OneBlade b{ elements->OneBladeB() };
-    OneBlade c{ elements->OneBladeC() };
+TEST_F(ElementsTest, MultiVectorBiVectorGeometricProduct) {
+    const MultiVector a{ Elements::MultiVectorA() };
+    const MultiVector aDuplicate{ Elements::MultiVectorA() };
+    const BiVector b{ Elements::BiVectorB() };
+    const BiVector c{ Elements::BiVectorC() };
 
-    MultiVector res1{ a * b };
-    MultiVector res2{ a * c };
+    const MultiVector res1{ a * b };
+    const MultiVector res2{ a * c };
 
-    MultiVector correct1{ 77, 128, 2, 22, 6, 9, -18, 9, 64, 80, 96, -101, -112, -141, 167, -260 };
-    MultiVector correct2{ 32, 42, -139, -2, 129, 219, -14, -103, 151, -94, 63, -155, 150, 11, 68, -22 };
+    const MultiVector correct1{ -233, 234, -94, -116, -126, -104, -95, -134, 8, 22, 12, 24, 55, 50, 107, 304 };
+    const MultiVector correct2{ -90, 141, -205, 122, -77, -145, 134, -147, -181, -10, 175, -391, 116, 119, 42, 9 };
+
+    EXPECT_EQ(res1, correct1);
+    EXPECT_EQ(res2, correct2);
+
+    EXPECT_EQ(a, aDuplicate);
+}
+
+TEST_F(ElementsTest, MultiVectorVectorGeometricProduct) {
+    const MultiVector a{ Elements::MultiVectorA() };
+    const MultiVector aDuplicate{ Elements::MultiVectorA() };
+    const Vector b{ Elements::VectorB() };
+    const Vector c{ Elements::VectorC() };
+
+    const MultiVector res1{ a * b };
+    const MultiVector res2{ a * c };
+
+    const MultiVector correct1{ 77, 128, 2, 22, 6, 9, -18, 9, 64, 80, 96, -101, -112, -141, 167, -260 };
+    const MultiVector correct2{ 32, 42, -139, -2, 129, 219, -14, -103, 151, -94, 63, -155, 150, 11, 68, -22 };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
@@ -320,16 +324,16 @@ TEST_F(ElementsTest, MultiVectorOneBladeGeometricProduct) {
 }
 
 TEST_F(ElementsTest, MultiVectorMotorGeometricProduct) {
-    MultiVector a{ elements->MultiVectorA() };
-    MultiVector aDuplicate{ elements->MultiVectorA() };
-    Motor b{ elements->MotorB() };
-    Motor c{ elements->MotorC() };
+    const MultiVector a{ Elements::MultiVectorA() };
+    const MultiVector aDuplicate{ Elements::MultiVectorA() };
+    const Motor b{ Elements::MotorB() };
+    const Motor c{ Elements::MotorC() };
 
-    MultiVector res1{ a * b };
-    MultiVector res2{ a * c };
+    const MultiVector res1{ a * b };
+    const MultiVector res2{ a * c };
 
-    MultiVector correct1{ -260, 430, -97, -119, -123, -196, -200, -240, 41, 55, 51, 116, 160, 168, 170, 432 };
-    MultiVector correct2{ 93, 4, 216, -156, 60, 20, -306, 4, 162, -30, -246, 442, -132, -130, -111, -52 };
+    const MultiVector correct1{ -260, 430, -97, -119, -123, -196, -200, -240, 41, 55, 51, 116, 160, 168, 170, 432 };
+    const MultiVector correct2{ 93, 4, 216, -156, 60, 20, -306, 4, 162, -30, -246, 442, -132, -130, -111, -52 };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
@@ -338,19 +342,19 @@ TEST_F(ElementsTest, MultiVectorMotorGeometricProduct) {
 }
 
 TEST_F(ElementsTest, MultiVectorWedge) {
-    MultiVector a{ elements->MultiVectorA() };
-    MultiVector aDuplicate{ elements->MultiVectorA() };
-    MultiVector b{ elements->MultiVectorB() };
-    MultiVector bDuplicate{ elements->MultiVectorB() };
-    MultiVector c{ elements->MultiVectorC() };
+    const MultiVector a{ Elements::MultiVectorA() };
+    const MultiVector aDuplicate{ Elements::MultiVectorA() };
+    const MultiVector b{ Elements::MultiVectorB() };
+    const MultiVector bDuplicate{ Elements::MultiVectorB() };
+    const MultiVector c{ Elements::MultiVectorC() };
 
-    MultiVector res1{ a ^ b };
-    MultiVector res2{ a ^ c };
-    MultiVector res3{ b ^ a };
+    const MultiVector res1{ a ^ b };
+    const MultiVector res2{ a ^ c };
+    const MultiVector res3{ b ^ a };
 
-    MultiVector correct1{ 6, 17, 22, 27, 32, 36, 40, 44, 51, 59, 61, -12, 4, -16, 464, 636 };
-    MultiVector correct2{ -8, -2, -28, -6, -40, -48, -56, -68, -146, -22, -18, 206, -174, -226, -246, 24 };
-    MultiVector correct3{ 6, 17, 22, 27, 32, 38, 44, 50, 53, 55, 63, -12, 4, -16, 464, 716 };
+    const MultiVector correct1{ 6, 17, 22, 27, 32, 36, 40, 44, 51, 59, 61, -12, 4, -16, 464, 636 };
+    const MultiVector correct2{ -8, -2, -28, -6, -40, -48, -56, -68, -146, -22, -18, 206, -174, -226, -246, 24 };
+    const MultiVector correct3{ 6, 17, 22, 27, 32, 38, 44, 50, 53, 55, 63, -12, 4, -16, 464, 716 };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
@@ -361,19 +365,19 @@ TEST_F(ElementsTest, MultiVectorWedge) {
 }
 
 TEST_F(ElementsTest, MultiVectorDot) {
-    MultiVector a{ elements->MultiVectorA() };
-    MultiVector aDuplicate{ elements->MultiVectorA() };
-    MultiVector b{ elements->MultiVectorB() };
-    MultiVector bDuplicate{ elements->MultiVectorB() };
-    MultiVector c{ elements->MultiVectorC() };
+    const MultiVector a{ Elements::MultiVectorA() };
+    const MultiVector aDuplicate{ Elements::MultiVectorA() };
+    const MultiVector b{ Elements::MultiVectorB() };
+    const MultiVector bDuplicate{ Elements::MultiVectorB() };
+    const MultiVector c{ Elements::MultiVectorC() };
 
-    MultiVector res1{ a | b };
-    MultiVector res2{ a | c };
-    MultiVector res3{ b | a };
+    const MultiVector res1{ a | b };
+    const MultiVector res2{ a | c };
+    const MultiVector res3{ b | a };
 
-    MultiVector correct1{ -572, 1028, -322, -356, -378, -312, -396, -372, 200, 238, 276, 54, 60, 66, 82, 87 };
-    MultiVector correct2{ 388, 492, 664, -8, 152, -394, -490, 310, -232, 4, -312, 156, -112, 224, -100, -30 };
-    MultiVector correct3{ -572, 1012, -326, -348, -382, -312, -396, -372, 200, 238, 276, 80, 84, 88, 82, 87 };
+    const MultiVector correct1{ -572, 1028, -322, -356, -378, -312, -396, -372, 200, 238, 276, 54, 60, 66, 82, 87 };
+    const MultiVector correct2{ 388, 492, 664, -8, 152, -394, -490, 310, -232, 4, -312, 156, -112, 224, -100, -30 };
+    const MultiVector correct3{ -572, 1012, -326, -348, -382, -312, -396, -372, 200, 238, 276, 80, 84, 88, 82, 87 };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
@@ -384,19 +388,19 @@ TEST_F(ElementsTest, MultiVectorDot) {
 }
 
 TEST_F(ElementsTest, MultiVectorJoin) {
-    MultiVector a{ elements->MultiVectorA() };
-    MultiVector aDuplicate{ elements->MultiVectorA() };
-    MultiVector b{ elements->MultiVectorB() };
-    MultiVector bDuplicate{ elements->MultiVectorB() };
-    MultiVector c{ elements->MultiVectorC() };
+    const MultiVector a{ Elements::MultiVectorA() };
+    const MultiVector aDuplicate{ Elements::MultiVectorA() };
+    const MultiVector b{ Elements::MultiVectorB() };
+    const MultiVector bDuplicate{ Elements::MultiVectorB() };
+    const MultiVector c{ Elements::MultiVectorC() };
 
-    MultiVector res1{ a & b };
-    MultiVector res2{ a & c };
-    MultiVector res3{ b & a };
+    const MultiVector res1{ a & b };
+    const MultiVector res2{ a & c };
+    const MultiVector res3{ b & a };
 
-    MultiVector correct1{ 636, -620, 398, 484, 534, 261, 299, 331, 370, 404, 438, 472, 507, 542, 577, 306 };
-    MultiVector correct2{ 24, -130, 762, -82, -670, 764, -14, -60, 460, 426, 532, 502, -6, 574, -2, 323 };
-    MultiVector correct3{ 716, -620, 398, 484, 534, 263, 295, 333, 364, 400, 436, 472, 507, 542, 577, 306 };
+    const MultiVector correct1{ 636, -620, 398, 484, 534, 261, 299, 331, 370, 404, 438, 472, 507, 542, 577, 306 };
+    const MultiVector correct2{ 24, -130, 762, -82, -670, 764, -14, -60, 460, 426, 532, 502, -6, 574, -2, 323 };
+    const MultiVector correct3{ 716, -620, 398, 484, 534, 263, 295, 333, 364, 400, 436, 472, 507, 542, 577, 306 };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
@@ -408,9 +412,9 @@ TEST_F(ElementsTest, MultiVectorJoin) {
 
 // TODO
 TEST_F(ElementsTest, MultiVectorInverse) {
-    MultiVector a{ elements->MultiVectorA() };
-    MultiVector aDuplicate{ elements->MultiVectorA() };
-    MultiVector c{ elements->MultiVectorC() };
+    const MultiVector a{ Elements::MultiVectorA() };
+    const MultiVector aDuplicate{ Elements::MultiVectorA() };
+    const MultiVector c{ Elements::MultiVectorC() };
 
     MultiVector res1{ ~a };
     MultiVector res2{ ~c };
@@ -432,45 +436,45 @@ TEST_F(ElementsTest, MultiVectorInverse) {
 }
 
 TEST_F(ElementsTest, MultiVectorNorm) {
-    MultiVector a{ elements->MultiVectorA() };
-    MultiVector aDuplicate{ elements->MultiVectorA() };
-    MultiVector c{ elements->MultiVectorC() };
+    const MultiVector a{ Elements::MultiVectorA() };
+    const MultiVector aDuplicate{ Elements::MultiVectorA() };
+    const MultiVector c{ Elements::MultiVectorC() };
 
-    float res1{ a.Norm() };
-    float res2{ c.Norm() };
+    const float res1{ a.Norm() };
+    const float res2{ c.Norm() };
 
-    EXPECT_TRUE(std::fabs(res1 - 26.4953f) < 0.0001f);
-    EXPECT_TRUE(std::fabs(res2 - 31.5911f) < 0.0001f);
+    EXPECT_NEAR(res1, 26.4953f, 0.0001f);
+    EXPECT_NEAR(res2, 31.5911f, 0.0001f);
     
     EXPECT_EQ(a, aDuplicate);
 }
 
 TEST_F(ElementsTest, MultiVectorVNorm) {
-    MultiVector a{ elements->MultiVectorA() };
-    MultiVector aDuplicate{ elements->MultiVectorA() };
-    MultiVector c{ elements->MultiVectorC() };
+    const MultiVector a{ Elements::MultiVectorA() };
+    const MultiVector aDuplicate{ Elements::MultiVectorA() };
+    const MultiVector c{ Elements::MultiVectorC() };
 
-    float res1{ a.VNorm() };
-    float res2{ c.VNorm() };
+    const float res1{ a.VNorm() };
+    const float res2{ c.VNorm() };
 
-    EXPECT_TRUE(std::fabs(res1 - 32.8938f) < 0.0001f);
-    EXPECT_TRUE(std::fabs(res2 - 38.1838f) < 0.0001f);
+    EXPECT_NEAR(res1, 32.8938f, 0.0001f);
+    EXPECT_NEAR(res2, 38.1838f, 0.0001f);
 
     EXPECT_EQ(a, aDuplicate);
 }
 
-// OneBlade
-TEST_F(ElementsTest, OneBladeMultiVectorGeometricProduct) {
-    OneBlade a{ elements->OneBladeA() };
-    OneBlade aDuplicate{ elements->OneBladeA() };
-    MultiVector b{ elements->MultiVectorB() };
-    MultiVector c{ elements->MultiVectorC() };
+// Vector
+TEST_F(ElementsTest, VectorMultiVectorGeometricProduct) {
+    const Vector a{ Elements::VectorA() };
+    const Vector aDuplicate{ Elements::VectorA() };
+    const MultiVector b{ Elements::MultiVectorB() };
+    const MultiVector c{ Elements::MultiVectorC() };
 
-    MultiVector res1{ a * b };
-    MultiVector res2{ a * c };
+    const MultiVector res1{ a * b };
+    const MultiVector res2{ a * c };
 
-    MultiVector correct1{ 74, -104, 17, -4, 23, 9, -26, 5, 49, 72, 83, 27, 58, 59, 146, 216 };
-    MultiVector correct2{ -30, -50, 109, 2, -107, -175, -30, 67, -121, -78, -45, 175, 62, 57, -54, 30 };
+    const MultiVector correct1{ 74, -104, 17, -4, 23, 9, -26, 5, 49, 72, 83, 27, 58, 59, 146, 216 };
+    const MultiVector correct2{ -30, -50, 109, 2, -107, -175, -30, 67, -121, -78, -45, 175, 62, 57, -54, 30 };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
@@ -478,35 +482,17 @@ TEST_F(ElementsTest, OneBladeMultiVectorGeometricProduct) {
     EXPECT_EQ(a, aDuplicate);
 }
 
-TEST_F(ElementsTest, OneBladeThreeBladeGeometricProduct) {
-    OneBlade a{ elements->OneBladeA() };
-    OneBlade aDuplicate{ elements->OneBladeA() };
-    ThreeBlade b{ elements->ThreeBladeB() };
-    ThreeBlade c{ elements->ThreeBladeC() };
+TEST_F(ElementsTest, VectorTriVectorGeometricProduct) {
+    const Vector a{ Elements::VectorA() };
+    const Vector aDuplicate{ Elements::VectorA() };
+    const TriVector b{ Elements::TriVectorB() };
+    const TriVector c{ Elements::TriVectorC() };
 
-    Motor res1{ a * b };
-    Motor res2{ a * c };
+    const Motor res1{ a * b };
+    const Motor res2{ a * c };
 
-    Motor correct1{ 0, 0, 0, 0, 18, 24, 30, 62 };
-    Motor correct2{ 0, 49, 2, -31, 21, 28, 35, -8 };
-
-    EXPECT_EQ(res1, correct1);
-    EXPECT_EQ(res2, correct2);
-
-    EXPECT_EQ(a, aDuplicate);
-}
-
-TEST_F(ElementsTest, OneBladeMotorGeometricProduct) {
-    OneBlade a{ elements->OneBladeA() };
-    OneBlade aDuplicate{ elements->OneBladeA() };
-    Motor b{ elements->MotorB() };
-    Motor c{ elements->MotorC() };
-
-    MultiVector res1{ a * b };
-    MultiVector res2{ a * c };
-
-    MultiVector correct1{ 0, -56, 13, 4, 19, 0, 0, 0, 0, 0, 0, 15, 26, 31, 98, 0 };
-    MultiVector correct2{ 0, -34, 73, -6, -79, 0, 0, 0, 0, 0, 0, 107, 30, 37, -38, 0 };
+    const Motor correct1{ 0, 0, 0, 0, 18, 24, 30, 62 };
+    const Motor correct2{ 0, 49, 2, -31, 21, 28, 35, -8 };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
@@ -514,35 +500,17 @@ TEST_F(ElementsTest, OneBladeMotorGeometricProduct) {
     EXPECT_EQ(a, aDuplicate);
 }
 
-TEST_F(ElementsTest, OneBladeWedgeMultiVector) {
-    OneBlade a{ elements->OneBladeA() };
-    OneBlade aDuplicate{ elements->OneBladeA() };
-    MultiVector b{ elements->MultiVectorB() };
-    MultiVector c{ elements->MultiVectorC() };
+TEST_F(ElementsTest, VectorMotorGeometricProduct) {
+    const Vector a{ Elements::VectorA() };
+    const Vector aDuplicate{ Elements::VectorA() };
+    const Motor b{ Elements::MotorB() };
+    const Motor c{ Elements::MotorC() };
 
-    MultiVector res1{ a ^ b };
-    MultiVector res2{ a ^ c };
+    const MultiVector res1{ a * b };
+    const MultiVector res2{ a * c };
 
-    MultiVector correct1{ 0, 6, 9, 12, 15, -2, -4, -6, -2, 4, -2, -27, -14, -31, 146, 216 };
-    MultiVector correct2{ 0, -8, -12, -16, -20, -27, -6, -41, -67, -6, 45, 118, -14, -38, -54, 30 };
-
-    EXPECT_EQ(res1, correct1);
-    EXPECT_EQ(res2, correct2);
-
-    EXPECT_EQ(a, aDuplicate);
-}
-
-TEST_F(ElementsTest, OneBladeWedgeTwoBlade) {
-    OneBlade a{ elements->OneBladeA() };
-    OneBlade aDuplicate{ elements->OneBladeA() };
-    TwoBlade b{ elements->TwoBladeB() };
-    TwoBlade c{ elements->TwoBladeC() };
-
-    ThreeBlade res1{ a ^ b };
-    ThreeBlade res2{ a ^ c };
-
-    ThreeBlade correct1{ -12, -14, -16, 86 };
-    ThreeBlade correct2{ -63, 14, 13, 34 };
+    const MultiVector correct1{ 0, -56, 13, 4, 19, 0, 0, 0, 0, 0, 0, 15, 26, 31, 98, 0 };
+    const MultiVector correct2{ 0, -34, 73, -6, -79, 0, 0, 0, 0, 0, 0, 107, 30, 37, -38, 0 };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
@@ -550,17 +518,17 @@ TEST_F(ElementsTest, OneBladeWedgeTwoBlade) {
     EXPECT_EQ(a, aDuplicate);
 }
 
-TEST_F(ElementsTest, OneBladeWedgeOneBlade) {
-    OneBlade a{ elements->OneBladeA() };
-    OneBlade aDuplicate{ elements->OneBladeA() };
-    OneBlade b{ elements->OneBladeB() };
-    OneBlade c{ elements->OneBladeC() };
+TEST_F(ElementsTest, VectorWedgeMultiVector) {
+    const Vector a{ Elements::VectorA() };
+    const Vector aDuplicate{ Elements::VectorA() };
+    const MultiVector b{ Elements::MultiVectorB() };
+    const MultiVector c{ Elements::MultiVectorC() };
 
-    TwoBlade res1{ a ^ b };
-    TwoBlade res2{ a ^ c };
+    const MultiVector res1{ a ^ b };
+    const MultiVector res2{ a ^ c };
 
-    TwoBlade correct1{ -1, -2, -3, -1, 2, -1 };
-    TwoBlade correct2{ 22, 4, 34, 58, 4, -38 };
+    const MultiVector correct1{ 0, 6, 9, 12, 15, -2, -4, -6, -2, 4, -2, -27, -14, -31, 146, 216 };
+    const MultiVector correct2{ 0, -8, -12, -16, -20, -27, -6, -41, -67, -6, 45, 118, -14, -38, -54, 30 };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
@@ -568,64 +536,82 @@ TEST_F(ElementsTest, OneBladeWedgeOneBlade) {
     EXPECT_EQ(a, aDuplicate);
 }
 
-// ThreeBlade
-TEST_F(ElementsTest, ThreeBladeJoinThreeBlade) {
-    ThreeBlade a{ elements->ThreeBladeA() };
-    ThreeBlade aDuplicate{ elements->ThreeBladeA() };
-    ThreeBlade b{ elements->ThreeBladeB() };
-    ThreeBlade c{ elements->ThreeBladeC() };
+TEST_F(ElementsTest, VectorWedgeBiVector) {
+    const Vector a{ Elements::VectorA() };
+    const Vector aDuplicate{ Elements::VectorA() };
+    const BiVector b{ Elements::BiVectorB() };
+    const BiVector c{ Elements::BiVectorC() };
 
-    TwoBlade res1{ a & b };
-    TwoBlade res2{ a & c };
+    const TriVector res1{ a ^ b };
+    const TriVector res2{ a ^ c };
 
-    TwoBlade correct1{ -1, 2, -1, 3, 2, 1 };
-    TwoBlade correct2{ -38, -4, 22, -34, 4, -58 };
+    const TriVector correct1{ -12, -14, -16, 86 };
+    const TriVector correct2{ -63, 14, 13, 34 };
+
+    EXPECT_EQ(res1, correct1);
+    EXPECT_EQ(res2, correct2);
+
+    EXPECT_EQ(a, aDuplicate);
+}
+
+TEST_F(ElementsTest, VectorWedgeVector) {
+    const Vector a{ Elements::VectorA() };
+    const Vector aDuplicate{ Elements::VectorA() };
+    const Vector b{ Elements::VectorB() };
+    const Vector c{ Elements::VectorC() };
+
+    const BiVector res1{ a ^ b };
+    const BiVector res2{ a ^ c };
+
+    const BiVector correct1{ -1, -2, -3, -1, 2, -1 };
+    const BiVector correct2{ 22, 4, 34, 58, 4, -38 };
+
+    EXPECT_EQ(res1, correct1);
+    EXPECT_EQ(res2, correct2);
+
+    EXPECT_EQ(a, aDuplicate);
+}
+
+// TriVector
+TEST_F(ElementsTest, TriVectorJoinTriVector) {
+    const TriVector a{ Elements::TriVectorA() };
+    const TriVector aDuplicate{ Elements::TriVectorA() };
+    const TriVector b{ Elements::TriVectorB() };
+    const TriVector c{ Elements::TriVectorC() };
+
+    const BiVector res1{ a & b };
+    const BiVector res2{ a & c };
+
+    const BiVector correct1{ -1, 2, -1, 3, 2, 1 };
+    const BiVector correct2{ -38, -4, 22, -34, 4, -58 };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
 
     // Practical case
-    ThreeBlade pointA{ 100, 150, 1 };
-    ThreeBlade pointB{ 150, 150, 1 };
+    const TriVector pointA{ 100, 150, 1 };
+    const TriVector pointB{ 150, 150, 1 };
 
-    TwoBlade line{ pointA & pointB };
+    const BiVector line{ pointA & pointB };
 
-    TwoBlade expectedLine{ 0, 50, -7500, 50, 0, 0 };
+    const BiVector expectedLine{ 0, 50, -7500, 50, 0, 0 };
 
     EXPECT_EQ(line, expectedLine);
 
     EXPECT_EQ(a, aDuplicate);
 }
 
-TEST_F(ElementsTest, ThreeBladeJoinTwoBlade) {
-    ThreeBlade a{ elements->ThreeBladeA() };
-    ThreeBlade aDuplicate{ elements->ThreeBladeA() };
-    TwoBlade b{ elements->TwoBladeB() };
-    TwoBlade c{ elements->TwoBladeC() };
+TEST_F(ElementsTest, TriVectorJoinBiVector) {
+    const TriVector a{ Elements::TriVectorA() };
+    const TriVector aDuplicate{ Elements::TriVectorA() };
+    const BiVector b{ Elements::BiVectorB() };
+    const BiVector c{ Elements::BiVectorC() };
 
-    OneBlade res1{ a & b };
-    OneBlade res2{ a & c };
+    const Vector res1{ a & b };
+    const Vector res2{ a & c };
 
-    OneBlade correct1{ -38, 19, 12, 29 };
-    OneBlade correct2{ 17, -79, 15, 7 };
-
-    EXPECT_EQ(res1, correct1);
-    EXPECT_EQ(res2, correct2);
-
-    EXPECT_EQ(a, aDuplicate);
-}
-
-TEST_F(ElementsTest, ThreeBladeMultiVectorGeometricProduct) {
-    ThreeBlade a{ elements->ThreeBladeA() };
-    ThreeBlade aDuplicate{ elements->ThreeBladeA() };
-    MultiVector b{ elements->MultiVectorB() };
-    MultiVector c{ elements->MultiVectorC() };
-
-    MultiVector res1{ a * b };
-    MultiVector res2{ a * c };
-
-    MultiVector correct1{ -85, 200, -55, -60, -65, -39, -18, -15, 25, 30, 35, 55, 36, 71, 15, -76 };
-    MultiVector correct2{ 90, 54, 60, -65, 70, -163, 18, -125, -30, 35, -40, 131, -42, -23, -20, -2 };
+    const Vector correct1{ -38, 19, 12, 29 };
+    const Vector correct2{ 17, -79, 15, 7 };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
@@ -633,36 +619,17 @@ TEST_F(ElementsTest, ThreeBladeMultiVectorGeometricProduct) {
     EXPECT_EQ(a, aDuplicate);
 }
 
-TEST_F(ElementsTest, ThreeBladeThreeBladeGeometricProduct) {
-    ThreeBlade a{ elements->ThreeBladeA() };
-    ThreeBlade aDuplicate{ elements->ThreeBladeA() };
-    ThreeBlade b{ elements->ThreeBladeB() };
-    ThreeBlade c{ elements->ThreeBladeC() };
+TEST_F(ElementsTest, TriVectorMultiVectorGeometricProduct) {
+    const TriVector a{ Elements::TriVectorA() };
+    const TriVector aDuplicate{ Elements::TriVectorA() };
+    const MultiVector b{ Elements::MultiVectorB() };
+    const MultiVector c{ Elements::MultiVectorC() };
 
-    Motor res1{ a * b };
-    Motor res2{ a * c };
+    const MultiVector res1{ a * b };
+    const MultiVector res2{ a * c };
 
-    Motor correct1{ -30, -3, -2, -1, 0, 0, 0, 0 };
-    Motor correct2{ -35, 34, -4, 58, 0, 0, 0, 0 };
-
-    EXPECT_EQ(res1, correct1);
-    EXPECT_EQ(res2, correct2);
-
-    EXPECT_EQ(a, aDuplicate);
-}
-
-// TwoBlade
-TEST_F(ElementsTest, TwoBladeMultiVectorGeometricProduct) {
-    TwoBlade a{ elements->TwoBladeA() };
-    TwoBlade aDuplicate{ elements->TwoBladeA() };
-    MultiVector b{ elements->MultiVectorB() };
-    MultiVector c{ elements->MultiVectorC() };
-
-    MultiVector res1{ a * b };
-    MultiVector res2{ a * c };
-
-    MultiVector correct1{ -218, 328, -85, -102, -119, -72, -123, -102, 21, 6, 27, -42, -99, -84, 110, 274 };
-    MultiVector correct2{ 80, 75, 187, 110, 55, -145, -114, -107, 155, -10, -165, -151, 12, 175, -44, 21 };
+    const MultiVector correct1{ -85, 200, -55, -60, -65, -39, -18, -15, 25, 30, 35, 55, 36, 71, 15, -76 };
+    const MultiVector correct2{ 90, 54, 60, -65, 70, -163, 18, -125, -30, 35, -40, 131, -42, -23, -20, -2 };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
@@ -670,35 +637,17 @@ TEST_F(ElementsTest, TwoBladeMultiVectorGeometricProduct) {
     EXPECT_EQ(a, aDuplicate);
 }
 
-TEST_F(ElementsTest, TwoBladeMotorGeometricProduct) {
-    TwoBlade a{ elements->TwoBladeA() };
-    TwoBlade aDuplicate{ elements->TwoBladeA() };
-    Motor b{ elements->MotorB() };
-    Motor c{ elements->MotorC() };
+TEST_F(ElementsTest, TriVectorTriVectorGeometricProduct) {
+    const TriVector a{ Elements::TriVectorA() };
+    const TriVector aDuplicate{ Elements::TriVectorA() };
+    const TriVector b{ Elements::TriVectorB() };
+    const TriVector c{ Elements::TriVectorC() };
 
-    Motor res1{ a * b };
-    Motor res2{ a * c };
+    const Motor res1{ a * b };
+    const Motor res2{ a * c };
 
-    Motor correct1{ -146, -40, -59, -54, 17, 14, 23, 166 };
-    Motor correct2{ 56, -81, -66, -75, 103, -18, -121, 9 };
-
-    EXPECT_EQ(res1, correct1);
-    EXPECT_EQ(res2, correct2);
-
-    EXPECT_EQ(a, aDuplicate);
-}
-
-TEST_F(ElementsTest, TwoBladeTwoBladeGeometricProduct) {
-    TwoBlade a{ elements->TwoBladeA() };
-    TwoBlade aDuplicate{ elements->TwoBladeA() };
-    TwoBlade b{ elements->TwoBladeB() };
-    TwoBlade c{ elements->TwoBladeC() };
-
-    Motor res1{ a * b };
-    Motor res2{ a * c };
-
-    Motor correct1{ -128, 2, -4, 2, 1, -2, 1, 139 };
-    Motor correct2{ -50, 12, -12, -12, -110, -4, 82, -6 };
+    const Motor correct1{ -30, -3, -2, -1, 0, 0, 0, 0 };
+    const Motor correct2{ -35, 34, -4, 58, 0, 0, 0, 0 };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
@@ -706,35 +655,18 @@ TEST_F(ElementsTest, TwoBladeTwoBladeGeometricProduct) {
     EXPECT_EQ(a, aDuplicate);
 }
 
-TEST_F(ElementsTest, TwoBladeOneBladeGeometricProduct) {
-    TwoBlade a{ elements->TwoBladeA() };
-    TwoBlade aDuplicate{ elements->TwoBladeA() };
-    OneBlade b{ elements->OneBladeB() };
-    OneBlade c{ elements->OneBladeC() };
+// BiVector
+TEST_F(ElementsTest, BiVectorMultiVectorGeometricProduct) {
+    const BiVector a{ Elements::BiVectorA() };
+    const BiVector aDuplicate{ Elements::BiVectorA() };
+    const MultiVector b{ Elements::MultiVectorB() };
+    const MultiVector c{ Elements::MultiVectorC() };
 
-    MultiVector res1{ a * b };
-    MultiVector res2{ a * c };
+    const MultiVector res1{ a * b };
+    const MultiVector res2{ a * c };
 
-    MultiVector correct1{ 0, 47, -1, 2, -1, 0, 0, 0, 0, 0, 0, -13, -22, -19, 92, 0 };
-    MultiVector correct2{ 0, 20, -84, 0, 60, 0, 0, 0, 0, 0, 0, -25, 18, 55, 38, 0 };
-
-    EXPECT_EQ(res1, correct1);
-    EXPECT_EQ(res2, correct2);
-
-    EXPECT_EQ(a, aDuplicate);
-}
-
-TEST_F(ElementsTest, TwoBladeWedgeOneBlade) {
-    TwoBlade a{ elements->TwoBladeA() };
-    TwoBlade aDuplicate{ elements->TwoBladeA() };
-    OneBlade b{ elements->OneBladeB() };
-    OneBlade c{ elements->OneBladeC() };
-
-    ThreeBlade res1{ a ^ b };
-    ThreeBlade res2{ a ^ c };
-
-    ThreeBlade correct1{ -13, -22, -19, 92 };
-    ThreeBlade correct2{ -25, 18, 55, 38 };
+    const MultiVector correct1{ -218, 328, -85, -102, -119, -72, -123, -102, 21, 6, 27, -42, -99, -84, 110, 274 };
+    const MultiVector correct2{ 80, 75, 187, 110, 55, -145, -114, -107, 155, -10, -165, -151, 12, 175, -44, 21 };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
@@ -742,11 +674,83 @@ TEST_F(ElementsTest, TwoBladeWedgeOneBlade) {
     EXPECT_EQ(a, aDuplicate);
 }
 
-TEST_F(ElementsTest, TwoBladePermutedDotTwoBladed) {
-    TwoBlade a{ elements->TwoBladeA() };
-    TwoBlade aDuplicate{ elements->TwoBladeA() };
-    TwoBlade b{ elements->TwoBladeB() };
-    TwoBlade c{ elements->TwoBladeC() };
+TEST_F(ElementsTest, BiVectorMotorGeometricProduct) {
+    const BiVector a{ Elements::BiVectorA() };
+    const BiVector aDuplicate{ Elements::BiVectorA() };
+    const Motor b{ Elements::MotorB() };
+    const Motor c{ Elements::MotorC() };
+
+    const Motor res1{ a * b };
+    const Motor res2{ a * c };
+
+    const Motor correct1{ -146, -40, -59, -54, 17, 14, 23, 166 };
+    const Motor correct2{ 56, -81, -66, -75, 103, -18, -121, 9 };
+
+    EXPECT_EQ(res1, correct1);
+    EXPECT_EQ(res2, correct2);
+
+    EXPECT_EQ(a, aDuplicate);
+}
+
+TEST_F(ElementsTest, BiVectorBiVectorGeometricProduct) {
+    const BiVector a{ Elements::BiVectorA() };
+    const BiVector aDuplicate{ Elements::BiVectorA() };
+    const BiVector b{ Elements::BiVectorB() };
+    const BiVector c{ Elements::BiVectorC() };
+
+    const Motor res1{ a * b };
+    const Motor res2{ a * c };
+
+    const Motor correct1{ -128, 2, -4, 2, 1, -2, 1, 139 };
+    const Motor correct2{ -50, 12, -12, -12, -110, -4, 82, -6 };
+
+    EXPECT_EQ(res1, correct1);
+    EXPECT_EQ(res2, correct2);
+
+    EXPECT_EQ(a, aDuplicate);
+}
+
+TEST_F(ElementsTest, BiVectorVectorGeometricProduct) {
+    const BiVector a{ Elements::BiVectorA() };
+    const BiVector aDuplicate{ Elements::BiVectorA() };
+    const Vector b{ Elements::VectorB() };
+    const Vector c{ Elements::VectorC() };
+
+    const MultiVector res1{ a * b };
+    const MultiVector res2{ a * c };
+
+    const MultiVector correct1{ 0, 47, -1, 2, -1, 0, 0, 0, 0, 0, 0, -13, -22, -19, 92, 0 };
+    const MultiVector correct2{ 0, 20, -84, 0, 60, 0, 0, 0, 0, 0, 0, -25, 18, 55, 38, 0 };
+
+    EXPECT_EQ(res1, correct1);
+    EXPECT_EQ(res2, correct2);
+
+    EXPECT_EQ(a, aDuplicate);
+}
+
+TEST_F(ElementsTest, BiVectorWedgeVector) {
+    const BiVector a{ Elements::BiVectorA() };
+    const BiVector aDuplicate{ Elements::BiVectorA() };
+    const Vector b{ Elements::VectorB() };
+    const Vector c{ Elements::VectorC() };
+
+    const TriVector res1{ a ^ b };
+    const TriVector res2{ a ^ c };
+
+    const TriVector correct1{ -13, -22, -19, 92 };
+    const TriVector correct2{ -25, 18, 55, 38 };
+
+    EXPECT_EQ(res1, correct1);
+    EXPECT_EQ(res2, correct2);
+
+    EXPECT_EQ(a, aDuplicate);
+}
+
+TEST_F(ElementsTest, BiVectorPermutedDotBiVectord) {
+    const BiVector a{ Elements::BiVectorA() };
+    const BiVector aDuplicate{ Elements::BiVectorA() };
+    const BiVector b{ Elements::BiVectorB() };
+    const BiVector c{ Elements::BiVectorC() };
 
     float res1{ a.PermutedDot(b) };
     float res2{ a.PermutedDot(c) };
@@ -758,17 +762,17 @@ TEST_F(ElementsTest, TwoBladePermutedDotTwoBladed) {
 
 // Motor
 TEST_F(ElementsTest, MotorMultiVectorGeometricProduct) {
-    Motor a{ elements->MotorA() };
-    Motor aDuplicate{ elements->MotorA() };
-    MultiVector b{ elements->MultiVectorB() };
-    MultiVector bDuplicate{ elements->MultiVectorB() };
-    MultiVector c{ elements->MultiVectorC() };
+    const Motor a{ Elements::MotorA() };
+    const Motor aDuplicate{ Elements::MotorA() };
+    const MultiVector b{ Elements::MultiVectorB() };
+    const MultiVector bDuplicate{ Elements::MultiVectorB() };
+    const MultiVector c{ Elements::MultiVectorC() };
 
-    MultiVector res1{ a * b };
-    MultiVector res2{ a * c };
+    const MultiVector res1{ a * b };
+    const MultiVector res2{ a * c };
 
-    MultiVector correct1{ -248, 246, -93, -105, -123, -172, -224, -216, 45, 35, 55, -82, -140, -138, 162, 400};
-    MultiVector correct2{ 85, 256, 208, 140, 44, -36, -274, 12, 154, 10, -222, -72, -70, 312, -87, 20 };
+    const MultiVector correct1{ -248, 246, -93, -105, -123, -172, -224, -216, 45, 35, 55, -82, -140, -138, 162, 400};
+    const MultiVector correct2{ 85, 256, 208, 140, 44, -36, -274, 12, 154, 10, -222, -72, -70, 312, -87, 20 };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
@@ -778,19 +782,19 @@ TEST_F(ElementsTest, MotorMultiVectorGeometricProduct) {
 }
 
 TEST_F(ElementsTest, MotorMotorGeometricProduct) {
-    Motor a{ elements->MotorA() };
-    Motor aDuplicate{ elements->MotorA() };
-    Motor b{ elements->MotorB() };
-    Motor bDuplicate{ elements->MotorB() };
-    Motor c{ elements->MotorC() };
+    const Motor a{ Elements::MotorA() };
+    const Motor aDuplicate{ Elements::MotorA() };
+    const Motor b{ Elements::MotorB() };
+    const Motor bDuplicate{ Elements::MotorB() };
+    const Motor c{ Elements::MotorC() };
 
-    Motor res1{ a * b };
-    Motor res2{ a * c };
-    Motor res3{ b * a };
+    const Motor res1{ a * b };
+    const Motor res2{ a * c };
+    const Motor res3{ b * a };
 
-    Motor correct1{ -164, -104, -124, -132, 33, 35, 43, 252 };
-    Motor correct2{ 57, -8, -174, 8, 102, -6, -162, -8 };
-    Motor correct3{ -164, -108, -116, -136, 31, 39, 41, 252 };
+    const Motor correct1{ -164, -104, -124, -132, 33, 35, 43, 252 };
+    const Motor correct2{ 57, -8, -174, 8, 102, -6, -162, -8 };
+    const Motor correct3{ -164, -108, -116, -136, 31, 39, 41, 252 };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
@@ -800,17 +804,17 @@ TEST_F(ElementsTest, MotorMotorGeometricProduct) {
     EXPECT_EQ(b, bDuplicate);
 }
 
-TEST_F(ElementsTest, MotorThreeBladeGeometricProduct) {
-    Motor a{ elements->MotorA() };
-    Motor aDuplicate{ elements->MotorA() };
-    ThreeBlade b{ elements->ThreeBladeB() };
-    ThreeBlade c{ elements->ThreeBladeC() };
+TEST_F(ElementsTest, MotorTriVectorGeometricProduct) {
+    const Motor a{ Elements::MotorA() };
+    const Motor aDuplicate{ Elements::MotorA() };
+    const TriVector b{ Elements::TriVectorB() };
+    const TriVector c{ Elements::TriVectorC() };
 
-    MultiVector res1{ a * b };
-    MultiVector res2{ a * c };
+    const MultiVector res1{ a * b };
+    const MultiVector res2{ a * c };
 
-    MultiVector correct1{ 0, 32, -36, -42, -48, 0, 0, 0, 0, 0, 0, -15, -10, -23, 12, 0 };
-    MultiVector correct2{ 0, -100, -42, -49, -56, 0, 0, 0, 0, 0, 0, 53, -22, -105, 14, 0 };
+    const MultiVector correct1{ 0, 32, -36, -42, -48, 0, 0, 0, 0, 0, 0, -15, -10, -23, 12, 0 };
+    const MultiVector correct2{ 0, -100, -42, -49, -56, 0, 0, 0, 0, 0, 0, 53, -22, -105, 14, 0 };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
@@ -818,21 +822,21 @@ TEST_F(ElementsTest, MotorThreeBladeGeometricProduct) {
     EXPECT_EQ(a, aDuplicate);
 }
 
-TEST_F(ElementsTest, MotorTwoBladeGeometricProduct) {
-    Motor a{ elements->MotorA() };
-    Motor aDuplicate{ elements->MotorA() };
-    TwoBlade b{ elements->TwoBladeB() };
-    TwoBlade c{ elements->TwoBladeC() };
-    Motor motorC{ elements->MotorC() };
+TEST_F(ElementsTest, MotorBiVectorGeometricProduct) {
+    const Motor a{ Elements::MotorA() };
+    const Motor aDuplicate{ Elements::MotorA() };
+    const BiVector b{ Elements::BiVectorB() };
+    const BiVector c{ Elements::BiVectorC() };
+    const Motor motorC{ Elements::MotorC() };
 
 
-    Motor res1{ a * b };
-    Motor res2{ a * c };
-    Motor res3{ motorC * b };
+    const Motor res1{ a * b };
+    const Motor res2{ a * c };
+    const Motor res3{ motorC * b };
 
-    Motor correct1{ -149, -48, -55, -62, 12, 14, 16, 172 };
-    Motor correct2{ -58, -65, 70, -99, -113, -18, 115, -3 };
-    Motor correct3{ 65, -66, -105, -120, -166, -32, 78, 6 };
+    const Motor correct1{ -149, -48, -55, -62, 12, 14, 16, 172 };
+    const Motor correct2{ -58, -65, 70, -99, -113, -18, 115, -3 };
+    const Motor correct3{ 65, -66, -105, -120, -166, -32, 78, 6 };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
@@ -840,21 +844,21 @@ TEST_F(ElementsTest, MotorTwoBladeGeometricProduct) {
     EXPECT_EQ(a, aDuplicate);
 }
 
-TEST_F(ElementsTest, MotorOneBladeGeometricProduct) {
-    Motor a{ elements->MotorA() };
-    Motor aDuplicate{ elements->MotorA() };
-    OneBlade b{ elements->OneBladeB() };
-    OneBlade c{ elements->OneBladeC() };
-    Motor motorC{ elements->MotorC() };
+TEST_F(ElementsTest, MotorVectorGeometricProduct) {
+    const Motor a{ Elements::MotorA() };
+    const Motor aDuplicate{ Elements::MotorA() };
+    const Vector b{ Elements::VectorB() };
+    const Vector c{ Elements::VectorC() };
+    const Motor motorC{ Elements::MotorC() };
 
 
-    MultiVector res1{ a * b };
-    MultiVector res2{ a * c };
-    MultiVector res3{ motorC * c };
+    const MultiVector res1{ a * b };
+    const MultiVector res2{ a * c };
+    const MultiVector res3{ motorC * c };
 
-    MultiVector correct1{ 0, 68, 6, 14, 10, 0, 0, 0, 0, 0, 0, -53, -68, -77, 107, 0 };
-    MultiVector correct2{ 0, 18, -87, -10, 85, 0, 0, 0, 0, 0, 0, -79, 78, 7, 44, 0 };
-    MultiVector correct3{ 0, 126, -23, 18, -31, 0, 0, 0, 0, 0, 0, -87, 102, -117, -164, 0 };
+    const MultiVector correct1{ 0, 68, 6, 14, 10, 0, 0, 0, 0, 0, 0, -53, -68, -77, 107, 0 };
+    const MultiVector correct2{ 0, 18, -87, -10, 85, 0, 0, 0, 0, 0, 0, -79, 78, 7, 44, 0 };
+    const MultiVector correct3{ 0, 126, -23, 18, -31, 0, 0, 0, 0, 0, 0, -87, 102, -117, -164, 0 };
 
     EXPECT_EQ(res1, correct1);
     EXPECT_EQ(res2, correct2);
@@ -863,51 +867,55 @@ TEST_F(ElementsTest, MotorOneBladeGeometricProduct) {
 }
 
 TEST_F(ElementsTest, Rotation) {
-    TwoBlade a{ elements->TwoBladeA() };
-    TwoBlade aDuplicate{ elements->TwoBladeA() };
-    TwoBlade b{ elements->TwoBladeB() };
-    TwoBlade c{ elements->TwoBladeC() };
+    const BiVector a{ Elements::BiVectorA() };
+    const BiVector aDuplicate{ Elements::BiVectorA() };
+    const BiVector b{ Elements::BiVectorB() };
+    BiVector c{ Elements::BiVectorC() };
 
-    Motor rotation1 = Motor::Rotation(50.f, a);
-    TwoBlade result1{ ((rotation1 * b) * ~rotation1).Grade2() };
-    TwoBlade correct1{ 3.276f, 3.7208f, 5.0422f, 5.862f, 7.1396f, 7.9789f };
+    const Motor rotation1 = Motor::Rotation(50.0f, a);
+    BiVector result1{ ((rotation1 * b) * ~rotation1).Grade2() };
+    BiVector correct1{ 3.276f, 3.7208f, 5.0422f, 5.862f, 7.1396f, 7.9789f };
 
-    EXPECT_TRUE(result1.RoundedEqual(correct1, 0.0001f));
+    for (size_t i = 0; i < 6; ++i) {
+        EXPECT_NEAR(result1[i], correct1[i], 0.0001f);
+    }
     EXPECT_EQ(a, aDuplicate);
 }
 
 TEST_F(ElementsTest, Translation) {
-    TwoBlade a{ elements->TwoBladeA() };
-    TwoBlade aDuplicate{ elements->TwoBladeA() };
-    TwoBlade b{ elements->TwoBladeB() };
-    TwoBlade c{ elements->TwoBladeC() };
+    const BiVector a{ Elements::BiVectorA() };
+    const BiVector aDuplicate{ Elements::BiVectorA() };
+    const BiVector b{ Elements::BiVectorB() };
+    BiVector c{ Elements::BiVectorC() };
 
-    Motor translation1 = Motor::Translation(7.f, a);
-    TwoBlade result1{ ((translation1 * b) * ~translation1).Grade2() };
-    TwoBlade correct1{ -2.1994f, 14.399f, -0.19956f, 6, 7, 8 };
+    const Motor translation1 = Motor::Translation(7.0f, a);
+    BiVector result1{ ((translation1 * b) * ~translation1).Grade2() };
+    BiVector correct1{ -2.1994f, 14.399f, -0.19956f, 6, 7, 8 };
 
-    EXPECT_TRUE(result1.RoundedEqual(correct1, 0.0001f));
+    for (size_t i = 0; i < 6; ++i) {
+        EXPECT_NEAR(result1[i], correct1[i], 0.0001f);
+    }
     EXPECT_EQ(a, aDuplicate);
 }
 
 // GANull
 TEST_F(ElementsTest, GANullOperations) {
-    MultiVector a{ elements->MultiVectorA() };
-    MultiVector aDuplicate{ elements->MultiVectorA() };
+    const MultiVector a{ Elements::MultiVectorA() };
+    const MultiVector aDuplicate{ Elements::MultiVectorA() };
 
-    GAElement res1{ GANull{} * a };
-    GAElement res2{ a * GANull{} };
+    const GAElement res1{ GANull{} * a };
+    const GAElement res2{ a * GANull{} };
 
-    GAElement res3{ GANull{} | a };
-    GAElement res4{ a | GANull{} };
+    const GAElement res3{ GANull{} | a };
+    const GAElement res4{ a | GANull{} };
 
-    GAElement res5{ GANull{} ^ a };
-    GAElement res6{ a ^ GANull{} };
+    const GAElement res5{ GANull{} ^ a };
+    const GAElement res6{ a ^ GANull{} };
 
-    GAElement res7{ GANull{}  & a };
-    GAElement res8{ a  & GANull{} };
+    const GAElement res7{ GANull{}  & a };
+    const GAElement res8{ a  & GANull{} };
 
-    GAElement correct{ GANull{} };
+    const GAElement correct{ GANull{} };
 
     EXPECT_EQ(res1, correct);
     EXPECT_EQ(res2, correct);
