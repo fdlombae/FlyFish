@@ -415,7 +415,7 @@ public:
         return { "e0", "e1", "e2", "e3" };
     }
 
-    [[nodiscard]] constexpr float Norm() const override
+    [[nodiscard]] float Norm() const override
     {
         return std::sqrt(data[1] * data[1] + data[2] * data[2] + data[3] * data[3]);
     }
