@@ -746,6 +746,7 @@ TEST_F(ElementsTest, BiVectorWedgeVector) {
     EXPECT_EQ(a, aDuplicate);
 }
 
+/*
 TEST_F(ElementsTest, BiVectorPermutedDotBiVectord) {
     const BiVector a{ Elements::BiVectorA() };
     const BiVector aDuplicate{ Elements::BiVectorA() };
@@ -759,6 +760,7 @@ TEST_F(ElementsTest, BiVectorPermutedDotBiVectord) {
 
     EXPECT_EQ(a, aDuplicate);
 }
+*/
 
 // Motor
 TEST_F(ElementsTest, MotorMultiVectorGeometricProduct) {

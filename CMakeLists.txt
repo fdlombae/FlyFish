@@ -1,11 +1,11 @@
-﻿cmake_minimum_required(VERSION 3.28)
+﻿cmake_minimum_required(VERSION 3.25)
 
 # Set C++23 standard for the entire project
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-project("FlyFish" VERSION 1.0.0 LANGUAGES CXX)
+project("FlyFish" VERSION 1.1.0 LANGUAGES CXX)
 
 # Enable modern CMake features
 if(POLICY CMP0135)

@@ -1061,11 +1061,11 @@ return res;
     res[15] = data[3] * b[1] + data[0] * b[2] + data[1] * b[3] + data[2] * b[4];
     return res;
 }
-[[nodiscard]] GANull TriVector::operator^(const TriVector& b) const
+[[nodiscard]] GANull TriVector::operator^(const TriVector&) const
 {
     return GANull{};
 }
-[[nodiscard]] GANull TriVector::operator^(const BiVector& b) const
+[[nodiscard]] GANull TriVector::operator^(const BiVector&) const
 {
     return GANull{};
 }
@@ -1104,7 +1104,7 @@ return res;
     res[15] = data[3] * b[5] + data[4] * b[6] + data[5] * b[7] + data[2] * b[10] + data[1] * b[9] + data[0] * b[8];
     return res;
 }
-[[nodiscard]] GANull BiVector::operator^(const TriVector& b) const
+[[nodiscard]] GANull BiVector::operator^(const TriVector&) const
 {
     return GANull{};
 }
@@ -1511,7 +1511,7 @@ return res;
 {
     return b[0] * data[3] + b[1] * data[4] + b[2] * data[5] + b[5] * data[2] + b[4] * data[1] + b[3] * data[0];
 }
-[[nodiscard]] GANull BiVector::operator& (const Vector& b) const
+[[nodiscard]] GANull BiVector::operator& (const Vector&) const
 {
     return GANull{};
 }
@@ -1562,11 +1562,11 @@ return res;
 {
     return b[2] * data[3] + b[1] * data[2] + b[0] * data[1] + b[3] * data[0];
 }
-[[nodiscard]] GANull Vector::operator& (const BiVector& b) const
+[[nodiscard]] GANull Vector::operator& (const BiVector&) const
 {
     return GANull{};
 }
-[[nodiscard]] GANull Vector::operator& (const Vector& b) const
+[[nodiscard]] GANull Vector::operator& (const Vector&) const
 {
     return GANull{};
 }

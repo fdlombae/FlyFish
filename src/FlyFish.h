@@ -33,8 +33,8 @@ public:
         return data[idx];
     }
 
-    inline float& get(size_t index) { return data[index]; }
-    [[nodiscard]] inline const float& get(size_t index) const { return data[index]; }
+    [[nodiscard]] constexpr float& get(size_t index) { return data[index]; }
+    [[nodiscard]] constexpr const float& get(size_t index) const { return data[index]; }
 
     GAElement(const GAElement& other) noexcept {
         data = other.data;
@@ -316,11 +316,11 @@ public:
     MultiVector& operator=(const Motor& b);
     MultiVector& operator=(Motor&& b) noexcept;
 
-    [[nodiscard]] constexpr float Norm() const override
+    [[nodiscard]] float Norm() const override
     {
         return std::sqrt(data[0] * data[0] + data[2] * data[2] + data[3] * data[3] + data[4] * data[4] + data[8] * data[8] + data[9] * data[9] + data[10] * data[10] + data[14] * data[14]);
     }
-    [[nodiscard]] constexpr float VNorm() const
+    [[nodiscard]] float VNorm() const
     {
         return std::sqrt(data[1] * data[1] + data[5] * data[5] + data[6] * data[6] + data[7] * data[7] + data[11] * data[11] + data[12] * data[12] + data[13] * data[13] + data[15] * data[15]);
     }
@@ -515,7 +515,7 @@ public:
             };
     }
 
-    [[nodiscard]] constexpr float Norm() const override
+    [[nodiscard]] float Norm() const override
     {
         return std::sqrt(data[3] * data[3] + data[4] * data[4] + data[5] * data[5]);
     }
@@ -728,7 +728,7 @@ public:
         };
     }
 
-    [[nodiscard]] constexpr float Norm() const override
+    [[nodiscard]] float Norm() const override
     {
         return std::sqrt(data[0] * data[0] + data[4] * data[4] + data[5] * data[5] + data[6] * data[6]);
     }
@@ -813,43 +813,43 @@ public:
     }
 
     template <typename Derived>
-    [[nodiscard]] GANull operator* (const Derived& b) const
+    [[nodiscard]] GANull operator* (const Derived&) const
     {
         return GANull{};
     }
     template <typename Derived>
-    [[nodiscard]] GANull operator| (const Derived& b) const
+    [[nodiscard]] GANull operator| (const Derived&) const
     {
         return GANull{};
     }
     template <typename Derived>
-    [[nodiscard]] GANull operator^ (const Derived& b) const
+    [[nodiscard]] GANull operator^ (const Derived&) const
     {
         return GANull{};
     }
     template <typename Derived>
-    [[nodiscard]] GANull operator& (const Derived& b) const
+    [[nodiscard]] GANull operator& (const Derived&) const
     {
         return GANull{};
     }
 
     template <typename Derived>
-    friend GANull operator* (const Derived& b, const GANull& element)
+    friend GANull operator* (const Derived&, const GANull&)
     {
         return GANull{};
     }
     template <typename Derived>
-    friend GANull operator| (const Derived& b, const GANull& element)
+    friend GANull operator| (const Derived&, const GANull&)
     {
         return GANull{};
     }
     template <typename Derived>
-    friend GANull operator^ (const Derived& b, const GANull& element)
+    friend GANull operator^ (const Derived&, const GANull&)
     {
         return GANull{};
     }
     template <typename Derived>
-    friend GANull operator& (const Derived& b, const GANull& element)
+    friend GANull operator& (const Derived&, const GANull&)
     {
         return GANull{};
     }
