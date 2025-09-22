@@ -325,6 +325,8 @@ public:
         return std::sqrt(data[1] * data[1] + data[5] * data[5] + data[6] * data[6] + data[7] * data[7] + data[11] * data[11] + data[12] * data[12] + data[13] * data[13] + data[15] * data[15]);
     }
 
+    [[nodiscard]] MultiVector Inverse() const;
+
     [[nodiscard]] Vector Grade1() const;
     [[nodiscard]] BiVector Grade2() const;
     [[nodiscard]] TriVector Grade3() const;

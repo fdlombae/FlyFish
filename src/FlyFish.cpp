@@ -138,6 +138,38 @@ MultiVector& MultiVector::operator=(Motor&& b) noexcept
     return *this;
 };
 
+[[nodiscard]] MultiVector MultiVector::Inverse() const
+{
+    float s{}, t0{}, t1{}, t2{}, t3{}, ps{};
+    s = data[0] * data[0] - data[2] * data[2] - data[3] * data[3] - data[4] * data[4] + data[10] * data[10] + data[9] * data[9] + data[8] * data[8] - data[14] * data[14];
+    t0 = -(data[11] * data[0] + data[8] * data[1] + data[15] * data[2] - data[7] * data[3] + data[6] * data[4] - data[14] * data[5] + data[4] * data[6] - data[3] * data[7] + data[12] * data[10] - data[13] * data[9] + data[1] * data[8] - data[9] * data[13] + data[10] * data[12] + data[0] * data[11] - data[5] * data[14] + data[2] * data[15]);
+    t1 = -(data[12] * data[0] + data[9] * data[1] + data[7] * data[2] + data[15] * data[3] - data[5] * data[4] - data[4] * data[5] - data[14] * data[6] + data[2] * data[7] - data[11] * data[10] + data[1] * data[9] + data[13] * data[8] + data[8] * data[13] + data[0] * data[12] - data[10] * data[11] - data[6] * data[14] + data[3] * data[15]);
+    t2 = -(data[13] * data[0] + data[10] * data[1] - data[6] * data[2] + data[5] * data[3] + data[15] * data[4] + data[3] * data[5] - data[2] * data[6] - data[14] * data[7] + data[1] * data[10] + data[11] * data[9] - data[12] * data[8] + data[0] * data[13] - data[8] * data[12] + data[9] * data[11] - data[7] * data[14] + data[4] * data[15]);
+    t3 = -(data[14] * data[0] - data[8] * data[2] - data[9] * data[3] - data[10] * data[4] - data[4] * data[10] - data[3] * data[9] - data[2] * data[8] + data[0] * data[14]);
+    ps = -(data[15] * data[0] + data[14] * data[1] + data[11] * data[2] + data[12] * data[3] + data[13] * data[4] - data[8] * data[5] - data[9] * data[6] - data[10] * data[7] - data[7] * data[10] - data[6] * data[9] - data[5] * data[8] + data[4] * data[13] + data[3] * data[12] + data[2] * data[11] + data[1] * data[14] + data[0] * data[15]);
+
+    float denom{s * s + t3 * t3};
+    MultiVector numer{
+        s * data[0] - t3 * data[14],
+        - s * data[1] - t2 * data[10] - t1 * data[9] - t0 * data[8] + ps * data[14] - t3 * data[15],
+        - s * data[2] + t3 * data[8],
+        - s * data[3] + t3 * data[9],
+        - s * data[4] + t3 * data[10],
+        t2 * data[3] - t1 * data[4] - s * data[5] + ps * data[8] + t3 * data[11] - t0 * data[14],
+        - t2 * data[2] + t0 * data[4] - s * data[6] + ps * data[9] + t3 * data[12] - t1 * data[14],
+        t1 * data[2] - t0 * data[3] - s * data[7] + ps * data[10] + t3 * data[13] - t2 * data[14],
+        - t3 * data[2] - s * data[8],
+        - t3 * data[3] - s * data[9],
+        - t3 * data[4] - s * data[10],
+        t0 * data[0] - ps * data[2] + t3 * data[5] - t1 * data[10] + t2 * data[9] + s * data[11],
+        t1 * data[0] - ps * data[3] + t3 * data[6] + t0 * data[10] - t2 * data[8] + s * data[12],
+        t2 * data[0] - ps * data[4] + t3 * data[7] - t0 * data[9] + t1 * data[8] + s * data[13],
+        t3 * data[0] + s * data[14],
+        ps * data[0] - t3 * data[1] - t0 * data[2] - t1 * data[3] - t2 * data[4] + s * data[15]
+    };
+    return numer / denom;
+}
+
 // Geometric Product
 
 // MultiVector

@@ -193,6 +193,19 @@ TEST_F(ElementsTest, GAElementProxyReferencing) {
 }
 
 // MultiVector
+TEST_F(ElementsTest, MultiVectorInverse)
+{
+    const MultiVector a{ Elements::MultiVectorA() };
+    const MultiVector b{ Elements::MultiVectorB() };
+    const MultiVector c{ Elements::MultiVectorC() };
+
+    const MultiVector mult1{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+
+    EXPECT_TRUE(mult1.RoundedEqual(a*a.Inverse()));
+    EXPECT_TRUE(mult1.RoundedEqual(b*b.Inverse()));
+    EXPECT_TRUE(mult1.RoundedEqual(c*c.Inverse()));
+}
+
 TEST_F(ElementsTest, MultiVectorEqual) {
     const MultiVector a{ Elements::MultiVectorA() };
     const MultiVector aDuplicate{ Elements::MultiVectorA() };
@@ -408,31 +421,6 @@ TEST_F(ElementsTest, MultiVectorJoin) {
 
     EXPECT_EQ(a, aDuplicate);
     EXPECT_EQ(b, bDuplicate);
-}
-
-// TODO
-TEST_F(ElementsTest, MultiVectorInverse) {
-    const MultiVector a{ Elements::MultiVectorA() };
-    const MultiVector aDuplicate{ Elements::MultiVectorA() };
-    const MultiVector c{ Elements::MultiVectorC() };
-
-    MultiVector res1{ ~a };
-    MultiVector res2{ ~c };
-
-    MultiVector correct1{
-        -0.057254f, -0.05906f, 0.034449f, 0.037603f, 0.040757f, 0.041053f, 0.041673f, 0.055879f,
-        -0.019408f, -0.023532f, -0.027656f, 0.026875f, 0.041619f, 0.04666f, 0.015041f, 0.0034234f
-    };
-
-    MultiVector correct2{
-        0.042378f, -0.033246f, -0.027217f, 0.02933f, -0.031443f, 0.029903f, -0.03863f, 0.038761f,
-        0.018264f, -0.020998f, 0.023732f, 0.028972f, -0.03278f, 0.041745f, -0.01528f, 0.0092276f
-    };
-
-    // EXPECT_TRUE(res1.RoundedEqual(correct1, 0.0001));
-    // EXPECT_TRUE(res2.RoundedEqual(correct2, 0.0001));
-
-    EXPECT_EQ(a, aDuplicate);
 }
 
 TEST_F(ElementsTest, MultiVectorNorm) {
