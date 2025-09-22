@@ -325,35 +325,12 @@ public:
         return std::sqrt(data[1] * data[1] + data[5] * data[5] + data[6] * data[6] + data[7] * data[7] + data[11] * data[11] + data[12] * data[12] + data[13] * data[13] + data[15] * data[15]);
     }
 
-    [[nodiscard]] MultiVector Inverse() const;
-
     [[nodiscard]] Vector Grade1() const;
     [[nodiscard]] BiVector Grade2() const;
     [[nodiscard]] TriVector Grade3() const;
     [[nodiscard]] Motor ToMotor() const;
 
-    [[nodiscard]] MultiVector operator ~() const{
-        float norm{ Norm() };
-        float normSquared{ norm };
-        return {
-            data[0] / normSquared,
-            data[1] / normSquared,
-            data[2] / normSquared,
-            data[3] / normSquared,
-            data[4] / normSquared,
-            -data[5] / normSquared,
-            -data[6] / normSquared,
-            -data[7] / normSquared,
-            -data[8] / normSquared,
-            -data[9] / normSquared,
-            -data[10] / normSquared,
-            -data[11] / normSquared,
-            -data[12] / normSquared,
-            -data[13] / normSquared,
-            -data[14] / normSquared,
-            data[15] / normSquared
-            };
-    };
+    [[nodiscard]] MultiVector operator ~() const;
 
     [[nodiscard]] MultiVector operator* (const MultiVector& b) const;
     [[nodiscard]] MultiVector operator* (const TriVector& b) const;

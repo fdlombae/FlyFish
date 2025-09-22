@@ -138,15 +138,15 @@ MultiVector& MultiVector::operator=(Motor&& b) noexcept
     return *this;
 };
 
-[[nodiscard]] MultiVector MultiVector::Inverse() const
+[[nodiscard]] MultiVector MultiVector::operator~() const
 {
     float s{}, t0{}, t1{}, t2{}, t3{}, ps{};
     s = data[0] * data[0] - data[2] * data[2] - data[3] * data[3] - data[4] * data[4] + data[10] * data[10] + data[9] * data[9] + data[8] * data[8] - data[14] * data[14];
-    t0 = -(data[11] * data[0] + data[8] * data[1] + data[15] * data[2] - data[7] * data[3] + data[6] * data[4] - data[14] * data[5] + data[4] * data[6] - data[3] * data[7] + data[12] * data[10] - data[13] * data[9] + data[1] * data[8] - data[9] * data[13] + data[10] * data[12] + data[0] * data[11] - data[5] * data[14] + data[2] * data[15]);
-    t1 = -(data[12] * data[0] + data[9] * data[1] + data[7] * data[2] + data[15] * data[3] - data[5] * data[4] - data[4] * data[5] - data[14] * data[6] + data[2] * data[7] - data[11] * data[10] + data[1] * data[9] + data[13] * data[8] + data[8] * data[13] + data[0] * data[12] - data[10] * data[11] - data[6] * data[14] + data[3] * data[15]);
-    t2 = -(data[13] * data[0] + data[10] * data[1] - data[6] * data[2] + data[5] * data[3] + data[15] * data[4] + data[3] * data[5] - data[2] * data[6] - data[14] * data[7] + data[1] * data[10] + data[11] * data[9] - data[12] * data[8] + data[0] * data[13] - data[8] * data[12] + data[9] * data[11] - data[7] * data[14] + data[4] * data[15]);
-    t3 = -(data[14] * data[0] - data[8] * data[2] - data[9] * data[3] - data[10] * data[4] - data[4] * data[10] - data[3] * data[9] - data[2] * data[8] + data[0] * data[14]);
-    ps = -(data[15] * data[0] + data[14] * data[1] + data[11] * data[2] + data[12] * data[3] + data[13] * data[4] - data[8] * data[5] - data[9] * data[6] - data[10] * data[7] - data[7] * data[10] - data[6] * data[9] - data[5] * data[8] + data[4] * data[13] + data[3] * data[12] + data[2] * data[11] + data[1] * data[14] + data[0] * data[15]);
+    t0 = - 2 * (data[11] * data[0] + data[8] * data[1] + data[15] * data[2] - data[7] * data[3] + data[6] * data[4] - data[14] * data[5] + data[12] * data[10] - data[13] * data[9]);
+    t1 = - 2 * (data[12] * data[0] + data[9] * data[1] + data[7] * data[2] + data[15] * data[3] - data[5] * data[4] - data[14] * data[6] - data[11] * data[10] + data[13] * data[8]);
+    t2 = - 2 * (data[13] * data[0] + data[10] * data[1] - data[6] * data[2] + data[5] * data[3] + data[15] * data[4] - data[14] * data[7] + data[11] * data[9] - data[12] * data[8]);
+    t3 = - 2 * (data[14] * data[0] - data[8] * data[2] - data[9] * data[3] - data[10] * data[4]);
+    ps = - 2 *(data[15] * data[0] + data[14] * data[1] + data[11] * data[2] + data[12] * data[3] + data[13] * data[4] - data[8] * data[5] - data[9] * data[6] - data[10] * data[7]);
 
     float denom{s * s + t3 * t3};
     MultiVector numer{

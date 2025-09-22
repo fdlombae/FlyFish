@@ -201,9 +201,9 @@ TEST_F(ElementsTest, MultiVectorInverse)
 
     const MultiVector mult1{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
-    EXPECT_TRUE(mult1.RoundedEqual(a*a.Inverse()));
-    EXPECT_TRUE(mult1.RoundedEqual(b*b.Inverse()));
-    EXPECT_TRUE(mult1.RoundedEqual(c*c.Inverse()));
+    EXPECT_TRUE(mult1.RoundedEqual(a*~a));
+    EXPECT_TRUE(mult1.RoundedEqual(b*~b));
+    EXPECT_TRUE(mult1.RoundedEqual(c*~c));
 }
 
 TEST_F(ElementsTest, MultiVectorEqual) {
