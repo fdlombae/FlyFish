@@ -585,7 +585,7 @@ public:
 
     [[nodiscard]] constexpr float Norm() const override
     {
-        return data[3];
+        return abs(data[3]);
     }
 
     [[nodiscard]] float VNorm() const

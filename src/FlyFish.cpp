@@ -146,7 +146,7 @@ MultiVector& MultiVector::operator=(Motor&& b) noexcept
     t1 = - 2 * (data[12] * data[0] + data[9] * data[1] + data[7] * data[2] + data[15] * data[3] - data[5] * data[4] - data[14] * data[6] - data[11] * data[10] + data[13] * data[8]);
     t2 = - 2 * (data[13] * data[0] + data[10] * data[1] - data[6] * data[2] + data[5] * data[3] + data[15] * data[4] - data[14] * data[7] + data[11] * data[9] - data[12] * data[8]);
     t3 = - 2 * (data[14] * data[0] - data[8] * data[2] - data[9] * data[3] - data[10] * data[4]);
-    ps = - 2 *(data[15] * data[0] + data[14] * data[1] + data[11] * data[2] + data[12] * data[3] + data[13] * data[4] - data[8] * data[5] - data[9] * data[6] - data[10] * data[7]);
+    ps = - 2 * (data[15] * data[0] + data[14] * data[1] + data[11] * data[2] + data[12] * data[3] + data[13] * data[4] - data[8] * data[5] - data[9] * data[6] - data[10] * data[7]);
 
     float denom{s * s + t3 * t3};
     MultiVector numer{
