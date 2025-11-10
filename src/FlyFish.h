@@ -211,6 +211,9 @@ public:
     friend Derived operator*(float scalar, const Derived& element) {
         return element * scalar;
     }
+    friend Derived operator/(float scalar, const Derived& element) {
+        return scalar * Inverse(element);
+    }
 
     [[nodiscard]] virtual constexpr float Norm() const
     {
@@ -282,7 +285,7 @@ public:
     {
     }
 
-    [[nodiscard]] constexpr MultiVector(float s, float e0, float e1, float e2, float e3, float e01, float e02, float e03, float e23, float e31, float e12, float e032, float e013, float e021, float e123, float e0123) noexcept
+    [[nodiscard]] constexpr MultiVector(float s, float e0 = 0, float e1 = 0, float e2 = 0, float e3 = 0, float e01 = 0, float e02 = 0, float e03 = 0, float e23 = 0, float e31 = 0, float e12 = 0, float e032 = 0, float e013 = 0, float e021 = 0, float e123 = 0, float e0123 = 0) noexcept
     {
         data[0] = s;
         data[1] = e0;
@@ -344,7 +347,6 @@ public:
     [[nodiscard]] MultiVector operator| (const Vector& b) const;
     [[nodiscard]] MultiVector operator| (const Motor& b) const;
 
-
     [[nodiscard]] MultiVector operator& (const MultiVector& b) const;
     [[nodiscard]] MultiVector operator& (const TriVector& b) const;
     [[nodiscard]] MultiVector operator& (const BiVector& b) const;
@@ -357,8 +359,12 @@ public:
     [[nodiscard]] MultiVector operator^(const Vector& b) const;
     [[nodiscard]] MultiVector operator^(const Motor& b) const;
 
-
     [[nodiscard]] MultiVector operator! () const;
+
+    friend MultiVector Gexp(const MultiVector& m)
+    {
+        throw std::runtime_error("Not implemented");
+    }
 };
 
 class Vector final : public GAElement<Vector, 4>
@@ -435,8 +441,9 @@ public:
     [[nodiscard]] BiVector operator^(const Vector& b) const;
     [[nodiscard]] MultiVector operator^(const Motor& b) const;
 
-
     [[nodiscard]] TriVector operator! () const;
+
+    [[nodiscard]] MultiVector Gexp() const;
 };
 
 class BiVector final : public GAElement<BiVector, 6>
@@ -540,6 +547,8 @@ public:
     [[nodiscard]] Motor operator ^ (const Motor& b) const;
     
     [[nodiscard]] BiVector operator! () const;
+
+    [[nodiscard]] Motor Gexp() const;
 };
 
 class TriVector final : public GAElement<TriVector, 4>
@@ -630,6 +639,9 @@ public:
     [[nodiscard]] GANull operator^(const BiVector& b) const;
     [[nodiscard]] float operator^(const Vector& b) const;
     [[nodiscard]] TriVector operator^(const Motor& b) const;
+
+    [[nodiscard]] MultiVector Gexp() const;
+
 };
 
 class Motor final : public GAElement<Motor, 8>
@@ -778,6 +790,8 @@ public:
     }
 
     [[nodiscard]] Motor operator! () const;
+
+    [[nodiscard]] Motor Gexp() const;
 };
 
 class GANull final : public GAElement<GANull, 0>

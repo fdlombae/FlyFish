@@ -1,4 +1,7 @@
+//#include "../src/FlyFish.h"
+
 #include "../src/FlyFish.h"
+
 #include <gtest/gtest.h>
 #include <cmath>
 #include <string>
@@ -13,7 +16,6 @@ public:
     {
         return {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17};
     }
-
     static MultiVector MultiVectorB()
     {
         return {3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18};
@@ -47,6 +49,7 @@ public:
     {
         return {-4, 5, -6, 7, -8, 9};
     }
+
     static TriVector TriVectorA()
     {
         return {2, 3, 4, 5};
@@ -59,6 +62,7 @@ public:
     {
         return {-4, 5, -6, 7};
     }
+
     static Motor MotorA()
     {
         return Motor{ 2, 3, 4, 5, 6, 7, 8, 9 };
@@ -560,6 +564,24 @@ TEST_F(ElementsTest, VectorWedgeVector) {
     EXPECT_EQ(a, aDuplicate);
 }
 
+TEST_F(ElementsTest, VectorGexp) {
+    const Vector a{ Elements::VectorA() };
+    const Vector b{ Elements::VectorB() };
+    const Vector c{ Elements::VectorC() };
+
+    const MultiVector res1{ a.Gexp()};
+    const MultiVector res2{ b.Gexp() };
+    const MultiVector res3{ c.Gexp() };
+
+    const MultiVector correct1{ 588.7027, 166.51, 249.7651, 333.0201, 416.2751};
+    const MultiVector correct2{ 3235.1068, 1106.0239, 1474.6985, 1843.3729, 2212.0477 };
+    const MultiVector correct3{ 17942.75 , -6843.0956, 8553.8695, -10264.6434, 11975.4173 };
+
+    EXPECT_TRUE(res1.RoundedEqual(correct1, 0.001f));
+    EXPECT_TRUE(res2.RoundedEqual(correct2, 0.001f));
+    EXPECT_TRUE(res3.RoundedEqual(correct3, 0.001f));
+}
+
 // TriVector
 TEST_F(ElementsTest, TriVectorJoinTriVector) {
     const TriVector a{ Elements::TriVectorA() };
@@ -607,6 +629,16 @@ TEST_F(ElementsTest, TriVectorJoinBiVector) {
     EXPECT_EQ(a, aDuplicate);
 }
 
+TEST_F(ElementsTest, TriVectorJoinPlane)
+{
+    const TriVector a{ 1, 2, 3, 1};
+    const Vector m{-4, float(std::sqrt(3) / 4), 1/2.f, 3/4.f};
+
+    float v = a & m;
+
+    EXPECT_NEAR(a & m, -0.3169, 0.0001);
+}
+
 TEST_F(ElementsTest, TriVectorMultiVectorGeometricProduct) {
     const TriVector a{ Elements::TriVectorA() };
     const TriVector aDuplicate{ Elements::TriVectorA() };
@@ -641,6 +673,20 @@ TEST_F(ElementsTest, TriVectorTriVectorGeometricProduct) {
     EXPECT_EQ(res2, correct2);
 
     EXPECT_EQ(a, aDuplicate);
+}
+
+TEST_F(ElementsTest, TriVectorGexp) {
+    const TriVector a{ Elements::TriVectorA() };
+    const TriVector c{ Elements::TriVectorC() };
+
+    const MultiVector res1{ a.Gexp()};
+    const MultiVector res2{ c.Gexp() };
+
+    const MultiVector correct1{ 0.28366, 0, 0, 0, 0, 0, 0, 0 ,0 ,0, 0, -0.38357, -0.57535, -0.76714, -0.95892};
+    const MultiVector correct2{ 0.7539, 0, 0, 0, 0, 0, 0, 0 ,0 ,0, 0, -0.37542, 0.46928, -0.56313, 0.65699};
+
+    EXPECT_TRUE(res1.RoundedEqual(correct1, 0.001f));
+    EXPECT_TRUE(res2.RoundedEqual(correct2, 0.001f));
 }
 
 // BiVector
@@ -734,8 +780,22 @@ TEST_F(ElementsTest, BiVectorWedgeVector) {
     EXPECT_EQ(a, aDuplicate);
 }
 
+TEST_F(ElementsTest, BiVectorGexp) {
+    const BiVector a{ Elements::BiVectorA() };
+    const BiVector c{ Elements::BiVectorC() };
+
+    const Motor res1{ a.Gexp()};
+    const Motor res2{ c.Gexp() };
+
+    const Motor correct1{ -0.48598, -1.1916, -1.4799, -1.7682, -0.41665, -0.49998, -0.58331, -4.6665};
+    const Motor correct2{ 0.20727, -0.88415, 1.0406, -1.197, 0.49166, -0.56189,0.63213, -8.5689};
+
+    EXPECT_TRUE(res1.RoundedEqual(correct1, 0.001f));
+    EXPECT_TRUE(res2.RoundedEqual(correct2, 0.001f));
+}
+
 /*
-TEST_F(ElementsTest, BiVectorPermutedDotBiVectord) {
+TEST_F(ElementsTest, BiVectorPermutedDotBiVector) {
     const BiVector a{ Elements::BiVectorA() };
     const BiVector aDuplicate{ Elements::BiVectorA() };
     const BiVector b{ Elements::BiVectorB() };
@@ -855,6 +915,23 @@ TEST_F(ElementsTest, MotorVectorGeometricProduct) {
     EXPECT_EQ(res3, correct3);
     EXPECT_EQ(a, aDuplicate);
 }
+
+/*
+TEST_F(ElementsTest, MotorGexp)
+{
+    const Motor a{ Elements::MotorA() };
+    const Motor c{ Elements::MotorC() };
+
+    const Motor res1{ a.Gexp() };
+    const Motor res2{ c.Gexp() };
+
+    const Motor correct1{ 0.28366, 0, 0, 0, 0, 0, 0, 0 ,0 ,0, 0, -0.38357, -0.57535, -0.76714, -0.95892};
+    const Motor correct2{ 0.7539, 0, 0, 0, 0, 0, 0, 0 ,0 ,0, 0, -0.37542, 0.46928, -0.56313, 0.65699};
+
+    EXPECT_TRUE(res1.RoundedEqual(correct1, 0.001f));
+    EXPECT_TRUE(res2.RoundedEqual(correct2, 0.001f));
+}
+*/
 
 TEST_F(ElementsTest, Rotation) {
     const BiVector a{ Elements::BiVectorA() };

@@ -3,9 +3,8 @@
 # Set C++23 standard for the entire project
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
 
-project("FlyFish" VERSION 1.1.0 LANGUAGES CXX)
+project("FlyFish" VERSION 1.1.1 LANGUAGES CXX)
 
 # Enable modern CMake features
 if(POLICY CMP0135)
@@ -34,7 +33,7 @@ include(FetchContent)
 
 FetchContent_Declare(
     googletest
-    URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
+    URL https://github.com/google/googletest/archive/refs/tags/v1.17.0.zip
     DOWNLOAD_EXTRACT_TIMESTAMP ON
 )
 
@@ -42,3 +41,8 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 target_link_libraries(FlyFish_Test PRIVATE gtest gtest_main)
+
+# Library setup
+add_library(FlyFish STATIC "src/FlyFish.cpp")
+
+target_include_directories(FlyFish PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

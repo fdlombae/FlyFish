@@ -1441,6 +1441,7 @@ return res;
     res[0] = b[0] * data[15] + b[1] * data[8] + b[2] * data[9] + b[3] * data[10] + b[6] * data[7] + b[5] * data[6] + b[4] * data[5] + b[7] * data[0];
     return res;
 }
+
 // TriVector
 [[nodiscard]] MultiVector TriVector::operator& (const MultiVector& b) const
 {
@@ -1508,6 +1509,7 @@ return res;
     res[0] = 0;
     return res;
 }
+
 // BiVector
 [[nodiscard]] MultiVector BiVector::operator& (const MultiVector& b) const
 {
@@ -1568,6 +1570,7 @@ return res;
     res[0] = b[1] * data[3] + b[2] * data[4] + b[3] * data[5] + b[6] * data[2] + b[5] * data[1] + b[4] * data[0];
     return res;
 }
+
 // Oneblade
 [[nodiscard]] MultiVector Vector::operator& (const MultiVector& b) const
 {
@@ -1611,6 +1614,7 @@ return res;
     res[0] = b[7] * data[0];
     return res;
 }
+
 // Motor
 [[nodiscard]] MultiVector Motor::operator& (const MultiVector& b) const
 {
@@ -1743,4 +1747,160 @@ return res;
         data[3],
         data[0]
     };
+}
+
+// Exponential method
+// MultiVector Gexp(const MultiVector& m)
+// {
+    /*
+    MultiVector res{};
+
+    // Vector
+    float vectorNorm{m.Grade1().Norm()};
+    if (vectorNorm != 0)
+    {
+        float factor{sinh(vectorNorm) / vectorNorm};
+        res[0] = cosh(vectorNorm);
+        res[1] = m[1] * factor;
+        res[2] = m[2] * factor;
+        res[3] = m[3] * factor;
+        res[4] = m[4] * factor;
+    } else
+    {
+        res[0] = 1;
+    }
+
+    // BiVector
+    float bivectorNorm{m.Grade2().Norm()};
+    if (bivectorNorm != 0)
+    {
+        float factor{sin(bivectorNorm) / bivectorNorm};
+        float cosBivector{cos(bivectorNorm)};
+        res = res * Motor{
+            cosBivector,
+            0,
+            0,
+            0,
+            m[8] * factor,
+            m[9] * factor,
+            m[10] * factor,
+            0
+        } * Motor{
+        1, m[5], m[6], m[7], 0, 0, 0, 0};
+    }
+
+    // TriVector
+    float trivectorNorm{m.Grade3().Norm()};
+    if (trivectorNorm != 0)
+    {
+        float factor{sin(trivectorNorm) / trivectorNorm};
+        res = res * MultiVector{
+            cos(trivectorNorm),
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            m[11] * factor,
+            m[12] * factor,
+            m[13] * factor,
+            m[14] * factor,
+            0
+        };
+    }
+
+    // Pseudoscalar
+    if (m[15] != 0)
+    {
+        res = res * Motor{1, 0, 0, 0, 0, 0, 0, m[15]};
+        /*
+        res[1] += m[15] * res[14];
+        res[5] -= m[15] * res[8];
+        res[6] -= m[15] * res[9];
+        res[7] -= m[15] * res[10];
+        res[11] += m[15] * res[2];
+        res[12] += m[15] * res[3];
+        res[13] += m[15] * res[4];
+        res[15] += m[15] * res[0];
+    }
+
+    // Scalar
+    if (m[0] != 0)
+    {
+        return res * std::exp(m[0]);
+    }
+    */
+
+    // Taylor expansion
+/*
+    MultiVector one{1};
+    MultiVector square{m * m};
+    MultiVector cubic{square * m};
+    MultiVector quartic{cubic * m};
+    MultiVector quintic{quartic * m};
+
+    return (quintic / 120);
+}
+*/
+
+[[nodiscard]] MultiVector Vector::Gexp() const
+{
+    float vectorNorm{this->Norm()};
+    MultiVector res{};
+    if (vectorNorm != 0)
+    {
+        float factor{sinh(vectorNorm) / vectorNorm};
+        res[0] = cosh(vectorNorm);
+        res[1] = data[0] * factor;
+        res[2] = data[1] * factor;
+        res[3] = data[2] * factor;
+        res[4] = data[3] * factor;
+    } else
+    {
+        res[0] = 1;
+    }
+    return res;
+}
+
+[[nodiscard]] Motor BiVector::Gexp() const
+{
+    float bivectorNorm{this->Norm()};
+    Motor res{};
+
+    if (bivectorNorm != 0)
+    {
+        float factor{sin(bivectorNorm) / bivectorNorm};
+        float cosBivector{cos(bivectorNorm)};
+        res = Motor{
+            cosBivector,
+            0,
+            0,
+            0,
+            data[3] * factor,
+            data[4] * factor,
+            data[5] * factor,
+            0
+        } * Motor{
+            1, data[0], data[1], data[2], 0, 0, 0, 0};
+    }
+
+    return res;
+}
+
+[[nodiscard]] MultiVector TriVector::Gexp() const
+{
+    float trivectorNorm{this->Norm()};
+    MultiVector res{};
+
+    if (trivectorNorm != 0)
+    {
+        float factor{sin(trivectorNorm) / trivectorNorm};
+        res = MultiVector{
+            cos(trivectorNorm),
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            data[0] * factor,
+            data[1] * factor,
+            data[2] * factor,
+            data[3] * factor,
+            0
+        };
+    }
+
+    return res;
 }
