@@ -592,7 +592,7 @@ public:
         return { "e032", "e013", "e021", "e123" };
     }
 
-    [[nodiscard]] constexpr float Norm() const override
+    [[nodiscard]] float Norm() const override
     {
         return abs(data[3]);
     }
