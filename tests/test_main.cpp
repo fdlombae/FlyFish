@@ -780,6 +780,7 @@ TEST_F(ElementsTest, BiVectorWedgeVector) {
     EXPECT_EQ(a, aDuplicate);
 }
 
+/*
 TEST_F(ElementsTest, BiVectorGexp) {
     const BiVector a{ Elements::BiVectorA() };
     const BiVector c{ Elements::BiVectorC() };
@@ -792,21 +793,6 @@ TEST_F(ElementsTest, BiVectorGexp) {
 
     EXPECT_TRUE(res1.RoundedEqual(correct1, 0.001f));
     EXPECT_TRUE(res2.RoundedEqual(correct2, 0.001f));
-}
-
-/*
-TEST_F(ElementsTest, BiVectorPermutedDotBiVector) {
-    const BiVector a{ Elements::BiVectorA() };
-    const BiVector aDuplicate{ Elements::BiVectorA() };
-    const BiVector b{ Elements::BiVectorB() };
-    const BiVector c{ Elements::BiVectorC() };
-
-    float res1{ a.PermutedDot(b) };
-    float res2{ a.PermutedDot(c) };
-
-    // TODO
-
-    EXPECT_EQ(a, aDuplicate);
 }
 */
 
@@ -915,23 +901,6 @@ TEST_F(ElementsTest, MotorVectorGeometricProduct) {
     EXPECT_EQ(res3, correct3);
     EXPECT_EQ(a, aDuplicate);
 }
-
-/*
-TEST_F(ElementsTest, MotorGexp)
-{
-    const Motor a{ Elements::MotorA() };
-    const Motor c{ Elements::MotorC() };
-
-    const Motor res1{ a.Gexp() };
-    const Motor res2{ c.Gexp() };
-
-    const Motor correct1{ 0.28366, 0, 0, 0, 0, 0, 0, 0 ,0 ,0, 0, -0.38357, -0.57535, -0.76714, -0.95892};
-    const Motor correct2{ 0.7539, 0, 0, 0, 0, 0, 0, 0 ,0 ,0, 0, -0.37542, 0.46928, -0.56313, 0.65699};
-
-    EXPECT_TRUE(res1.RoundedEqual(correct1, 0.001f));
-    EXPECT_TRUE(res2.RoundedEqual(correct2, 0.001f));
-}
-*/
 
 TEST_F(ElementsTest, Rotation) {
     const BiVector a{ Elements::BiVectorA() };

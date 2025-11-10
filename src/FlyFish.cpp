@@ -1858,8 +1858,10 @@ return res;
     return res;
 }
 
+/*
 [[nodiscard]] Motor BiVector::Gexp() const
 {
+    /*
     float bivectorNorm{this->Norm()};
     Motor res{};
 
@@ -1868,6 +1870,7 @@ return res;
         float factor{sin(bivectorNorm) / bivectorNorm};
         float cosBivector{cos(bivectorNorm)};
         res = Motor{
+            1, data[0], data[1], data[2], 0, 0, 0, 0} * Motor{
             cosBivector,
             0,
             0,
@@ -1876,12 +1879,23 @@ return res;
             data[4] * factor,
             data[5] * factor,
             0
-        } * Motor{
-            1, data[0], data[1], data[2], 0, 0, 0, 0};
+        };
     }
 
-    return res;
+    float bivectorNormSquared{data[3] * data[3] + data[4] * data[4] + data[5] * data[5]};
+
+    // No rotation
+    if (bivectorNormSquared == 1)
+    {
+        return Motor{1, data[0], data[1], data[2], 0, 0, 0, 0};
+    }
+
+    float m{data[0]*data[5] + data[1] * data[4] + data[2] * data[3]};
+    float bivectorNorm{sqrt(bivectorNormSquared)}, cosine{cos(bivectorNorm)}, sine{sin(bivectorNorm) / bivectorNorm},
+    distance{m/bivectorNormSquared * (cosine - sine)};
+    return Motor{cosine, sine*data[0] + distance*data[5], sine*data[1] + distance*data[4], sine*data[2] + distance*data[3], sine*data[3], sine*data[4], sine*data[5], m*sine};
 }
+*/
 
 [[nodiscard]] MultiVector TriVector::Gexp() const
 {
