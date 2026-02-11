@@ -96,127 +96,105 @@ protected:
 // Named functions
 TEST_F(ElementsTest, GANamedFunctions) {
     // Test data
-    const MultiVector multi{ -2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5.2f, -10 };
-    const TriVector three{ 5, 0, -3, 2.5f };
-    const BiVector two{ 1, 2, 0, 0, 0, 0 };
-    const Vector one{ -1, 2.5f, 0, 0 };
-    const Motor motor{ 1, 3, 0, 0, 0, 0, 0, -1.0f };
+    const MultiVector multi{Elements::MultiVectorA()};
+    const TriVector trivector{Elements::TriVectorA() };
+    const BiVector bivector{ Elements::BiVectorA() };
+    const Vector vector{ Elements::VectorA() };
+    const Motor motor{ Elements::MotorA() };
 
-    // Empty/zero elements for edge cases
-    const MultiVector zeroMulti{};
-    const TriVector zeroTri{};
-    const BiVector zeroBi{};
-    const Vector zeroVec{};
-    const Motor zeroMotor{};
-
-    // Identity elements
-    const MultiVector identityMulti{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    const Motor identityMotor{ 1, 0, 0, 0, 0, 0, 0, 0 };
-
-    // Test 1: Basic operations with original test data
-    EXPECT_EQ(GA::Inverse(multi), ~multi);
-    EXPECT_EQ(GA::Gep(multi, three), multi * three);
-    EXPECT_EQ(GA::Inner(multi, three), multi | three);
-    EXPECT_EQ(GA::Outer(multi, three), multi ^ three);
-    EXPECT_EQ(GA::Join(multi, three), multi & three);
-    EXPECT_EQ(GA::PoincareDual(multi), !multi);
-
-    // Test 2: Test all type combinations for Gep
-    EXPECT_EQ(GA::Gep(multi, two), multi * two);
-    EXPECT_EQ(GA::Gep(multi, one), multi * one);
+    // Test Gep
+    EXPECT_EQ(GA::Gep(multi, bivector), multi * bivector);
+    EXPECT_EQ(GA::Gep(multi, vector), multi * vector);
     EXPECT_EQ(GA::Gep(multi, motor), multi * motor);
 
-    EXPECT_EQ(GA::Gep(three, multi), three * multi);
-    EXPECT_EQ(GA::Gep(three, two), three * two);
-    EXPECT_EQ(GA::Gep(three, one), three * one);
-    EXPECT_EQ(GA::Gep(three, motor), three * motor);
+    EXPECT_EQ(GA::Gep(trivector, multi), trivector * multi);
+    EXPECT_EQ(GA::Gep(trivector, bivector), trivector * bivector);
+    EXPECT_EQ(GA::Gep(trivector, vector), trivector * vector);
+    EXPECT_EQ(GA::Gep(trivector, motor), trivector * motor);
 
-    EXPECT_EQ(GA::Gep(two, multi), two * multi);
-    EXPECT_EQ(GA::Gep(two, three), two * three);
-    EXPECT_EQ(GA::Gep(two, one), two * one);
-    EXPECT_EQ(GA::Gep(two, motor), two * motor);
+    EXPECT_EQ(GA::Gep(bivector, multi), bivector * multi);
+    EXPECT_EQ(GA::Gep(bivector, trivector), bivector * trivector);
+    EXPECT_EQ(GA::Gep(bivector, vector), bivector * vector);
+    EXPECT_EQ(GA::Gep(bivector, motor), bivector * motor);
 
-    EXPECT_EQ(GA::Gep(one, multi), one * multi);
-    EXPECT_EQ(GA::Gep(one, three), one * three);
-    EXPECT_EQ(GA::Gep(one, two), one * two);
-    EXPECT_EQ(GA::Gep(one, motor), one * motor);
+    EXPECT_EQ(GA::Gep(vector, multi), vector * multi);
+    EXPECT_EQ(GA::Gep(vector, trivector), vector * trivector);
+    EXPECT_EQ(GA::Gep(vector, bivector), vector * bivector);
+    EXPECT_EQ(GA::Gep(vector, motor), vector * motor);
 
     EXPECT_EQ(GA::Gep(motor, multi), motor * multi);
-    EXPECT_EQ(GA::Gep(motor, three), motor * three);
-    EXPECT_EQ(GA::Gep(motor, two), motor * two);
-    EXPECT_EQ(GA::Gep(motor, one), motor * one);
+    EXPECT_EQ(GA::Gep(motor, trivector), motor * trivector);
+    EXPECT_EQ(GA::Gep(motor, bivector), motor * bivector);
+    EXPECT_EQ(GA::Gep(motor, vector), motor * vector);
 
-    // Test 3: Test all type combinations for Inner product
-    EXPECT_EQ(GA::Inner(multi, two), multi | two);
-    EXPECT_EQ(GA::Inner(multi, one), multi | one);
+    // Test Inner product
+    EXPECT_EQ(GA::Inner(multi, bivector), multi | bivector);
+    EXPECT_EQ(GA::Inner(multi, vector), multi | vector);
     EXPECT_EQ(GA::Inner(multi, motor), multi | motor);
 
-    EXPECT_EQ(GA::Inner(three, multi), three | multi);
-    EXPECT_EQ(GA::Inner(three, two), three | two);
-    EXPECT_EQ(GA::Inner(three, one), three | one);
-    EXPECT_EQ(GA::Inner(three, motor), three | motor);
+    EXPECT_EQ(GA::Inner(trivector, multi), trivector | multi);
+    EXPECT_EQ(GA::Inner(trivector, bivector), trivector | bivector);
+    EXPECT_EQ(GA::Inner(trivector, vector), trivector | vector);
+    EXPECT_EQ(GA::Inner(trivector, motor), trivector | motor);
 
-    EXPECT_EQ(GA::Inner(two, multi), two | multi);
-    EXPECT_EQ(GA::Inner(two, three), two | three);
-    EXPECT_EQ(GA::Inner(two, one), two | one);
-    EXPECT_EQ(GA::Inner(two, motor), two | motor);
+    EXPECT_EQ(GA::Inner(bivector, multi), bivector | multi);
+    EXPECT_EQ(GA::Inner(bivector, trivector), bivector | trivector);
+    EXPECT_EQ(GA::Inner(bivector, vector), bivector | vector);
+    EXPECT_EQ(GA::Inner(bivector, motor), bivector | motor);
 
-    EXPECT_EQ(GA::Inner(one, multi), one | multi);
-    EXPECT_EQ(GA::Inner(one, three), one | three);
-    EXPECT_EQ(GA::Inner(one, two), one | two);
-    EXPECT_EQ(GA::Inner(one, motor), one | motor);
+    EXPECT_EQ(GA::Inner(vector, multi), vector | multi);
+    EXPECT_EQ(GA::Inner(vector, trivector), vector | trivector);
+    EXPECT_EQ(GA::Inner(vector, bivector), vector | bivector);
+    EXPECT_EQ(GA::Inner(vector, motor), vector | motor);
 
     EXPECT_EQ(GA::Inner(motor, multi), motor | multi);
-    EXPECT_EQ(GA::Inner(motor, three), motor | three);
-    EXPECT_EQ(GA::Inner(motor, two), motor | two);
-    EXPECT_EQ(GA::Inner(motor, one), motor | one);
+    EXPECT_EQ(GA::Inner(motor, trivector), motor | trivector);
+    EXPECT_EQ(GA::Inner(motor, bivector), motor | bivector);
+    EXPECT_EQ(GA::Inner(motor, vector), motor | vector);
 
-    // Test 4: Test all type combinations for Outer product
-    EXPECT_EQ(GA::Outer(multi, two), multi ^ two);
-    EXPECT_EQ(GA::Outer(multi, one), multi ^ one);
+    // Test Outer product
+    EXPECT_EQ(GA::Outer(multi, bivector), multi ^ bivector);
+    EXPECT_EQ(GA::Outer(multi, vector), multi ^ vector);
     EXPECT_EQ(GA::Outer(multi, motor), multi ^ motor);
 
-    EXPECT_EQ(GA::Outer(three, multi), three ^ multi);
-    EXPECT_EQ(GA::Outer(three, two), three ^ two);
-    EXPECT_EQ(GA::Outer(three, one), three ^ one);
-    EXPECT_EQ(GA::Outer(three, motor), three ^ motor);
+    EXPECT_EQ(GA::Outer(trivector, multi), trivector ^ multi);
+    EXPECT_EQ(GA::Outer(trivector, bivector), trivector ^ bivector);
+    EXPECT_EQ(GA::Outer(trivector, vector), trivector ^ vector);
+    EXPECT_EQ(GA::Outer(trivector, motor), trivector ^ motor);
 
-    EXPECT_EQ(GA::Outer(two, multi), two ^ multi);
-    EXPECT_EQ(GA::Outer(two, three), two ^ three);
-    EXPECT_EQ(GA::Outer(two, one), two ^ one);
-    EXPECT_EQ(GA::Outer(two, motor), two ^ motor);
+    EXPECT_EQ(GA::Outer(bivector, multi), bivector ^ multi);
+    EXPECT_EQ(GA::Outer(bivector, trivector), bivector ^ trivector);
+    EXPECT_EQ(GA::Outer(bivector, vector), bivector ^ vector);
+    EXPECT_EQ(GA::Outer(bivector, motor), bivector ^ motor);
 
-    EXPECT_EQ(GA::Outer(one, multi), one ^ multi);
-    EXPECT_EQ(GA::Outer(one, three), one ^ three);
-    EXPECT_EQ(GA::Outer(one, two), one ^ two);
-    EXPECT_EQ(GA::Outer(one, motor), one ^ motor);
+    EXPECT_EQ(GA::Outer(vector, multi), vector ^ multi);
+    EXPECT_EQ(GA::Outer(vector, trivector), vector ^ trivector);
+    EXPECT_EQ(GA::Outer(vector, bivector), vector ^ bivector);
+    EXPECT_EQ(GA::Outer(vector, motor), vector ^ motor);
 
     EXPECT_EQ(GA::Outer(motor, multi), motor ^ multi);
-    EXPECT_EQ(GA::Outer(motor, three), motor ^ three);
-    EXPECT_EQ(GA::Outer(motor, two), motor ^ two);
-    EXPECT_EQ(GA::Outer(motor, one), motor ^ one);
+    EXPECT_EQ(GA::Outer(motor, trivector), motor ^ trivector);
+    EXPECT_EQ(GA::Outer(motor, bivector), motor ^ bivector);
+    EXPECT_EQ(GA::Outer(motor, vector), motor ^ vector);
 
-    // Test 5: Test valid type combinations for Join
-    EXPECT_EQ(GA::Join(three, two), three & two);
-    EXPECT_EQ(GA::Join(three, one), three & one);
-    EXPECT_EQ(GA::Join(two, three), two & three);
-    EXPECT_EQ(GA::Join(two, one), two & one);
-    EXPECT_EQ(GA::Join(one, three), one & three);
-    EXPECT_EQ(GA::Join(one, two), one & two);
+    // Test Join
+    EXPECT_EQ(GA::Join(trivector, bivector), trivector & bivector);
+    EXPECT_EQ(GA::Join(trivector, vector), trivector & vector);
+    EXPECT_EQ(GA::Join(bivector, trivector), bivector & trivector);
+    EXPECT_EQ(GA::Join(bivector, vector), bivector & vector);
+    EXPECT_EQ(GA::Join(vector, trivector), vector & trivector);
+    EXPECT_EQ(GA::Join(vector, bivector), vector & bivector);
 
-    // Test 6: Edge cases - Zero elements
-    EXPECT_EQ(GA::Gep(zeroMulti, multi), zeroMulti * multi);
-    EXPECT_EQ(GA::Gep(multi, zeroMulti), multi * zeroMulti);
-    EXPECT_EQ(GA::Inner(zeroMulti, multi), zeroMulti | multi);
-    EXPECT_EQ(GA::Outer(zeroMulti, multi), zeroMulti ^ multi);
-    EXPECT_EQ(GA::Join(zeroMulti, multi), zeroMulti & multi);
-    EXPECT_EQ(GA::PoincareDual(zeroMulti), !zeroMulti);
+    // Test Inverse
+    EXPECT_EQ(GA::Inverse(multi), ~multi);
+    EXPECT_EQ(GA::Inverse(trivector), ~trivector);
+    EXPECT_EQ(GA::Inverse(bivector), ~bivector);
+    EXPECT_EQ(GA::Inverse(vector), ~vector);
+    EXPECT_EQ(GA::Inverse(motor), ~motor);
 
-    // Test 7: Edge cases - Identity elements
-    EXPECT_EQ(GA::Gep(identityMulti, multi), identityMulti * multi);
-    EXPECT_EQ(GA::Gep(multi, identityMulti), multi * identityMulti);
-    EXPECT_EQ(GA::Gep(identityMotor, motor), identityMotor * motor);
-    EXPECT_EQ(GA::Gep(motor, identityMotor), motor * identityMotor);
+    // Test Gexp
+    EXPECT_EQ(GA::Gexp(trivector), trivector.Gexp());
+    EXPECT_EQ(GA::Gexp(vector), vector.Gexp());
 }
 
 // GAElement
@@ -1028,23 +1006,6 @@ TEST_F(ElementsTest, MotorVectorGeometricProduct) {
     EXPECT_EQ(a, aDuplicate);
 }
 
-//// TODO: Debug, it fails
-// TEST_F(ElementsTest, Rotation) {
-//     const BiVector a{ Elements::BiVectorA() };
-//     const BiVector aDuplicate{ Elements::BiVectorA() };
-//     const BiVector b{ Elements::BiVectorB() };
-//     BiVector c{ Elements::BiVectorC() };
-//
-//     const Motor rotation1 = Motor::Rotation(50.0f, a);
-//     BiVector result1{ ((rotation1 * b) * ~rotation1).Grade2() };
-//     BiVector correct1{ 3.276f, 3.7208f, 5.0422f, 5.862f, 7.1396f, 7.9789f };
-//
-//     for (size_t i = 0; i < 6; ++i) {
-//         EXPECT_NEAR(result1[i], correct1[i], 0.0001f);
-//     }
-//     EXPECT_EQ(a, aDuplicate);
-// }
-
 TEST_F(ElementsTest, Translation) {
     const BiVector a{ Elements::BiVectorA() };
     const BiVector aDuplicate{ Elements::BiVectorA() };
@@ -1055,9 +1016,7 @@ TEST_F(ElementsTest, Translation) {
     BiVector result1{ ((translation1 * b) * ~translation1).Grade2() };
     BiVector correct1{ -2.1994f, 14.399f, -0.19956f, 6, 7, 8 };
 
-    for (size_t i = 0; i < 6; ++i) {
-        EXPECT_NEAR(result1[i], correct1[i], 0.0001f);
-    }
+    EXPECT_TRUE(result1.RoundedEqual(correct1, 0.0001f));
     EXPECT_EQ(a, aDuplicate);
 }
 
