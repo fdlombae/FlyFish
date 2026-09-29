@@ -11,15 +11,15 @@ if(POLICY CMP0135)
     cmake_policy(SET CMP0135 NEW)
 endif()
 
-# Compiler-specific optimizations
-if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-    add_compile_options(-Wall -Wextra -Wpedantic -O3)
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    add_compile_options(/W4)
-endif()
-
 # Create executable
-add_executable(FlyFish_Test "src/FlyFish.cpp" "tests/test_main.cpp")
+add_executable(FlyFish_Test "tests/test_main.cpp")
+
+# Compiler-specific optimizations (applied per-target to avoid affecting dependencies)
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    target_compile_options(FlyFish_Test PRIVATE -Wall -Wextra -Wpedantic -Werror -O3)
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    target_compile_options(FlyFish_Test PRIVATE /W4)
+endif()
 
 # Set properties for the target
 set_target_properties(FlyFish_Test PROPERTIES
@@ -40,9 +40,9 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-target_link_libraries(FlyFish_Test PRIVATE gtest gtest_main)
+target_link_libraries(FlyFish_Test PRIVATE FlyFish gtest gtest_main)
 
-# Library setup
-add_library(FlyFish STATIC "src/FlyFish.cpp")
+# Header-only library setup
+add_library(FlyFish INTERFACE)
 
-target_include_directories(FlyFish PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(FlyFish INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
