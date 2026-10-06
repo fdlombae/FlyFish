@@ -676,6 +676,24 @@ TEST_F(ElementsTest, VectorWedgeVector) {
   EXPECT_EQ(a, aDuplicate);
 }
 
+TEST_F(ElementsTest, VectorGepVector) {
+  const Vector a{Elements::VectorA()};
+  const Vector aDuplicate{Elements::VectorA()};
+  const Vector b{Elements::VectorB()};
+  const Vector c{Elements::VectorC()};
+
+  const Motor res1{a * b};
+  const Motor res2{a * c};
+
+  const Motor correct1{62, -1, -2, -3, -1, 2, -1, 0};
+  const Motor correct2{26, 22, 4, 34, 58, 4, -38, 0};
+
+  EXPECT_EQ(res1, correct1);
+  EXPECT_EQ(res2, correct2);
+
+  EXPECT_EQ(a, aDuplicate);
+}
+
 TEST_F(ElementsTest, VectorGexp) {
   const Vector a{Elements::VectorA()};
   const Vector b{Elements::VectorB()};

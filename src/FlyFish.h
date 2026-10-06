@@ -1287,12 +1287,12 @@ constexpr MultiVector Vector::operator*(const BiVector &b) const {
 constexpr Motor Vector::operator*(const Vector &b) const {
   Motor res{};
   res[0] = data[1] * b[1] + data[2] * b[2] + data[3] * b[3];
-  res[1] = data[1] * b[0] - data[0] * b[1];
-  res[2] = data[2] * b[0] - data[0] * b[2];
-  res[3] = data[3] * b[0] - data[0] * b[3];
-  res[4] = data[3] * b[2] - data[2] * b[3];
-  res[5] = -data[3] * b[1] + data[1] * b[3];
-  res[6] = data[2] * b[1] - data[1] * b[2];
+  res[1] = data[0] * b[1] - data[1] * b[0];
+  res[2] = data[0] * b[2] - data[2] * b[0];
+  res[3] = data[0] * b[3] - data[3] * b[0];
+  res[4] = data[2] * b[3] - data[3] * b[2];
+  res[5] = data[3] * b[1] - data[1] * b[3];
+  res[6] = data[1] * b[2] - data[2] * b[1];
   return res;
 }
 constexpr MultiVector Vector::operator*(const Motor &b) const {
